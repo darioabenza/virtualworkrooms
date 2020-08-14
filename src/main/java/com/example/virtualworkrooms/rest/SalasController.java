@@ -32,6 +32,7 @@ public class SalasController {
         return controladorSalas.allCategorias();
     }
 
+    //TODO: parse uri
     @GetMapping("/categorias/{nombreCat}")
     public Categoria one(@PathVariable String nombreCat){
         return controladorSalas.getCategoria(nombreCat);
@@ -91,7 +92,7 @@ public class SalasController {
         return controladorSalas.updateMensaje(nombreCat, id, idMsj);
     }
 
-    @PutMapping("/categorias/{nombreCat}/salas/{id}/mensajes/{idMsj}")
+    @DeleteMapping("/categorias/{nombreCat}/salas/{id}/mensajes/{idMsj}")
     public void deleteMensaje(@PathVariable String nombreCat, @PathVariable String id, @PathVariable String idMsj){
         controladorSalas.deleteMensaje(nombreCat, id, idMsj);
     }

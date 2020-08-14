@@ -8,7 +8,7 @@ import com.example.virtualworkrooms.modelo.Sala;
 
 import org.springframework.stereotype.Component;
 
-@Component("controladorCategorias")
+@Component("controladorSalas")
 public class ControladorSalasImpl implements ControladorSalas {
 
     @Override
