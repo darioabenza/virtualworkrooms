@@ -8,15 +8,33 @@ import org.springframework.stereotype.Component;
 public class ControladorUsuariosImpl implements ControladorUsuarios {
 
     @Override
-    public void registrarUsuario(Usuario u) {
+    public Usuario registrarUsuario(Usuario u) {
         // TODO Auto-generated method stub
-
+        return null;
     }
 
     @Override
-    public Usuario getUsuario(String email, String password) {
+    public Usuario getUsuario(String id) {
         // TODO Auto-generated method stub
         return null;
+    }
+
+    @Override
+    public Usuario getUsuarios() {
+        // TODO Auto-generated method stub
+        return null;
+    }
+
+    @Override
+    public Usuario updateUsuario(String id, Usuario u) {
+        // TODO Auto-generated method stub
+        return null;
+    }
+
+    @Override
+    public void deleteUsuario(String id) {
+        // TODO Auto-generated method stub
+
     }
     
 }

@@ -21,6 +21,14 @@ public class Mensaje {
     }
 
 
+    public String getId() {
+        return this.id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
+    }
+
     public String getTexto() {
         return this.texto;
     }
