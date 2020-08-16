@@ -49,7 +49,7 @@ public class ControladorUsuariosImpl implements ControladorUsuarios {
             usuario.get().setHorasTrabajadas(u.getHorasTrabajadas());
             usuario.get().setNombre(u.getNombre());
             usuario.get().setPassword(u.getPassword());
-            return usuario.get();
+            return usuariosRepositorio.save(usuario.get());
         } else throw new NotFoundException("Usuario no encontrado");
     }
 
