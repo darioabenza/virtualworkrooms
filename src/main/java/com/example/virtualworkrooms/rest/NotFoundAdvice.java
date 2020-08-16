@@ -1,5 +1,6 @@
 package com.example.virtualworkrooms.rest;
 
+import com.example.virtualworkrooms.controlador.NotFoundException;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseBody;

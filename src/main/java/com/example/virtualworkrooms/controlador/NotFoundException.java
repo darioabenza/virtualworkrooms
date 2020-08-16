@@ -1,4 +1,4 @@
-package com.example.virtualworkrooms.rest;
+package com.example.virtualworkrooms.controlador;
 
 @SuppressWarnings("serial")
 public class NotFoundException extends RuntimeException{

@@ -1,5 +1,6 @@
 package com.example.virtualworkrooms.controlador;
 
+@SuppressWarnings("serial")
 public class VirtualWorkRoomsException extends Exception {
 
     public VirtualWorkRoomsException(String msg, Throwable causa){
