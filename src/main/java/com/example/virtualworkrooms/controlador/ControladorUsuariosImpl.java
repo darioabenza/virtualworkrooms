@@ -50,10 +50,7 @@ public class ControladorUsuariosImpl implements ControladorUsuarios {
             usuario.get().setNombre(u.getNombre());
             usuario.get().setPassword(u.getPassword());
             return usuario.get();
-        } else{
-            u.setId(id);
-            return usuariosRepositorio.save(u);
-        }
+        } else throw new NotFoundException("Usuario no encontrado");
     }
 
     @Override
