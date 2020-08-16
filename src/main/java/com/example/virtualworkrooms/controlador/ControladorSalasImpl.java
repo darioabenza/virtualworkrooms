@@ -5,16 +5,20 @@ import java.util.List;
 import com.example.virtualworkrooms.modelo.Categoria;
 import com.example.virtualworkrooms.modelo.Mensaje;
 import com.example.virtualworkrooms.modelo.Sala;
+import com.example.virtualworkrooms.persistencia.CategoriasRepositorio;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 @Component("controladorSalas")
 public class ControladorSalasImpl implements ControladorSalas {
 
+    @Autowired
+    CategoriasRepositorio categoriasRepositorio;
+
     @Override
     public List<Categoria> allCategorias() {
-        // TODO Auto-generated method stub
-        return null;
+        return categoriasRepositorio.findAll();
     }
 
     @Override
