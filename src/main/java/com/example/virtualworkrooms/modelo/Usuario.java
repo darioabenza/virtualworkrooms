@@ -1,5 +1,7 @@
 package com.example.virtualworkrooms.modelo;
 
+import java.time.LocalDateTime;
+
 import org.springframework.data.annotation.Id;
 
 public class Usuario {
@@ -9,15 +11,15 @@ public class Usuario {
     private String email;
     private String password;
     private int horasTrabajadas;
+    private LocalDateTime fechaRegistro;
 
-
-    public Usuario(String nombre, String email, String password, int horasTrabajadas) {
+    public Usuario(String nombre, String email, String password, int horasTrabajadas, LocalDateTime fechaRegistro) {
         this.nombre = nombre;
         this.email = email;
         this.password = password;
         this.horasTrabajadas = horasTrabajadas;
+        this.fechaRegistro = fechaRegistro;
     }
-
 
     public String getId() {
         return this.id;
@@ -59,15 +61,25 @@ public class Usuario {
         this.horasTrabajadas = horasTrabajadas;
     }
 
+    public LocalDateTime getFechaRegistro() {
+        return this.fechaRegistro;
+    }
+
+    public void setFechaRegistro(LocalDateTime fechaRegistro) {
+        this.fechaRegistro = fechaRegistro;
+    }
+
     @Override
     public String toString() {
         return "{" +
-            " id='" + getId() + "'" +
-            ", nombre='" + getNombre() + "'" +
-            ", email='" + getEmail() + "'" +
-            ", password='" + getPassword() + "'" +
-            ", horasTrabajadas='" + getHorasTrabajadas() + "'" +
+            " id='" + id + "'" +
+            ", nombre='" + nombre + "'" +
+            ", email='" + email + "'" +
+            ", password='" + password + "'" +
+            ", horasTrabajadas='" + horasTrabajadas + "'" +
+            ", fechaRegistro='" + fechaRegistro + "'" +
             "}";
     }
+    
 
 }
