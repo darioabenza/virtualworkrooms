@@ -1,6 +1,7 @@
 package com.example.virtualworkrooms.controlador;
 
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.Optional;
 
 import com.example.virtualworkrooms.modelo.Usuario;
@@ -35,9 +36,8 @@ public class ControladorUsuariosImpl implements ControladorUsuarios {
     }
 
     @Override
-    public Usuario getUsuarios() {
-        // TODO Auto-generated method stub
-        return null;
+    public List<Usuario> getUsuarios() {
+        return usuariosRepositorio.findAll();
     }
 
     @Override

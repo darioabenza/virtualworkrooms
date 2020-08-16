@@ -1,6 +1,7 @@
 package com.example.virtualworkrooms.rest;
 
 import java.net.URI;
+import java.util.List;
 
 import com.example.virtualworkrooms.controlador.ControladorUsuarios;
 import com.example.virtualworkrooms.controlador.VirtualWorkRoomsException;
@@ -32,7 +33,7 @@ public class UsuariosController {
     }
 
     @GetMapping("/usuarios")
-    public Usuario all(){
+    public List<Usuario> all(){
         return controladorUsuarios.getUsuarios();
     }
 
