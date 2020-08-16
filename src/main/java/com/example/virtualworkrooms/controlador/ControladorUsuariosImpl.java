@@ -42,8 +42,17 @@ public class ControladorUsuariosImpl implements ControladorUsuarios {
 
     @Override
     public Usuario updateUsuario(String id, Usuario u) {
-        // TODO Auto-generated method stub
-        return null;
+        Optional<Usuario> usuario = usuariosRepositorio.findById(id)
+        if(usuario.isPresent()){
+            usuario.get().setEmail(u.getEmail());
+            usuario.get().setFechaRegistro(u.getFechaRegistro());
+            usuario.get().setHorasTrabajadas(u.getHorasTrabajadas());
+            usuario.get().setNombre(u.getNombre());
+            usuario.get().setPassword(u.getPassword());
+        } else{
+            u.setId(id);
+            return usuariosRepositorio.save(u);
+        }
     }
 
     @Override
