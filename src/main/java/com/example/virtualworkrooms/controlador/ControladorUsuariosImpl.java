@@ -1,6 +1,7 @@
 package com.example.virtualworkrooms.controlador;
 
 import java.time.LocalDateTime;
+import java.util.Optional;
 
 import com.example.virtualworkrooms.modelo.Usuario;
 import com.example.virtualworkrooms.persistencia.UsuariosRepositorio;
@@ -12,23 +13,25 @@ import org.springframework.stereotype.Component;
 public class ControladorUsuariosImpl implements ControladorUsuarios {
 
     @Autowired
-    private UsuariosRepositorio repositorioUsuarios;
+    private UsuariosRepositorio usuariosRepositorio;
 
     @Override
-    public Usuario registrarUsuario(Usuario u) throws VirtualWorkRoomsException{
-        if(repositorioUsuarios.findByEmail(u.getEmail())!=null)
+    public Usuario registrarUsuario(Usuario u) throws VirtualWorkRoomsException {
+        if (usuariosRepositorio.findByEmail(u.getEmail()) != null)
             throw new VirtualWorkRoomsException("El email con el que se intenta registrar ya está en uso.");
-        if(repositorioUsuarios.findByNombre(u.getNombre())!=null)
+        if (usuariosRepositorio.findByNombre(u.getNombre()) != null)
             throw new VirtualWorkRoomsException("El nombre de usuario con el que se intenta registrar ya está en uso.");
         u.setFechaRegistro(LocalDateTime.now());
-        Usuario usuario = repositorioUsuarios.insert(u);
+        Usuario usuario = usuariosRepositorio.insert(u);
         return usuario;
     }
 
     @Override
     public Usuario getUsuario(String id) {
-        // TODO Auto-generated method stub
-        return null;
+        Optional<Usuario> u = usuariosRepositorio.findById(id);
+        if(!u.isPresent())
+            throw new NotFoundException("Usuario no encontrado");
+        return u.get();
     }
 
     @Override
