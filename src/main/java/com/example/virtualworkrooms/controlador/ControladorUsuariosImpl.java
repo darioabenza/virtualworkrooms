@@ -57,7 +57,7 @@ public class ControladorUsuariosImpl implements ControladorUsuarios {
 
     @Override
     public void deleteUsuario(String id) {
-        // TODO Auto-generated method stub
+        usuariosRepositorio.deleteById(id);
 
     }
     
