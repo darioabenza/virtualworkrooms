@@ -11,13 +11,15 @@ public class Mensaje {
     private String media;
     private Usuario autor;
     private LocalDateTime fecha;
+    private String salaId;
 
 
-    public Mensaje(String Texto, String media, Usuario autor, LocalDateTime Fecha) {
-        this.texto = Texto;
+    public Mensaje(String texto, String media, Usuario autor, LocalDateTime fecha, String salaId) {
+        this.texto = texto;
         this.media = media;
         this.autor = autor;
-        this.fecha = Fecha;
+        this.fecha = fecha;
+        this.salaId = salaId;
     }
 
 
@@ -29,12 +31,13 @@ public class Mensaje {
         this.id = id;
     }
 
+
     public String getTexto() {
         return this.texto;
     }
 
-    public void setTexto(String Texto) {
-        this.texto = Texto;
+    public void setTexto(String texto) {
+        this.texto = texto;
     }
 
     public String getMedia() {
@@ -57,8 +60,16 @@ public class Mensaje {
         return this.fecha;
     }
 
-    public void setFecha(LocalDateTime Fecha) {
-        this.fecha = Fecha;
+    public void setFecha(LocalDateTime fecha) {
+        this.fecha = fecha;
+    }
+
+    public String getSalaId() {
+        return this.salaId;
+    }
+
+    public void setSalaId(String salaId) {
+        this.salaId = salaId;
     }
 
 
@@ -66,11 +77,14 @@ public class Mensaje {
     public String toString() {
         return "{" +
             " id='" + id + "'" +
-            ", Texto='" + texto + "'" +
+            ", texto='" + texto + "'" +
             ", media='" + media + "'" +
             ", autor='" + autor + "'" +
-            ", Fecha='" + fecha + "'" +
+            ", fecha='" + fecha + "'" +
+            ", salaId='" + salaId + "'" +
             "}";
     }
+    
+    
     
 }

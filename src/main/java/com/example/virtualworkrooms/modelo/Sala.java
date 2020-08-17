@@ -1,27 +1,22 @@
 package com.example.virtualworkrooms.modelo;
 
 import java.time.LocalDateTime;
-import java.util.List;
 
 import org.springframework.data.annotation.Id;
-import org.springframework.data.annotation.Transient;
 
 public class Sala {
 
     @Id
     private String id;
     private String nombre;
-    private List<Mensaje> mensajes;
     private LocalDateTime fecha;
-    @Transient
-    private List<Usuario> usuarios;
+    private String categoriaNombre;
 
 
-    public Sala(String nombre, List<Mensaje> mensajes, LocalDateTime fecha, List<Usuario> usuarios) {
+    public Sala(String nombre, LocalDateTime fecha, String categoriaNombre) {
         this.nombre = nombre;
-        this.mensajes = mensajes;
         this.fecha = fecha;
-        this.usuarios = usuarios;
+        this.categoriaNombre = categoriaNombre;
     }
 
 
@@ -33,21 +28,12 @@ public class Sala {
         this.id = id;
     }
 
-
     public String getNombre() {
         return this.nombre;
     }
 
     public void setNombre(String nombre) {
         this.nombre = nombre;
-    }
-
-    public List<Mensaje> getMensajes() {
-        return this.mensajes;
-    }
-
-    public void setMensajes(List<Mensaje> mensajes) {
-        this.mensajes = mensajes;
     }
 
     public LocalDateTime getFecha() {
@@ -58,22 +44,24 @@ public class Sala {
         this.fecha = fecha;
     }
 
-    public List<Usuario> getUsuarios() {
-        return this.usuarios;
+    public String getCategoriaNombre() {
+        return this.categoriaNombre;
     }
 
-    public void setUsuarios(List<Usuario> usuarios) {
-        this.usuarios = usuarios;
+    public void setCategoriaNombre(String categoriaNombre) {
+        this.categoriaNombre = categoriaNombre;
     }
+   
 
     @Override
     public String toString() {
         return "{" +
-            " nombre='" + nombre + "'" +
-            ", mensajes='" + mensajes + "'" +
+            " id='" + id + "'" +
+            ", nombre='" + nombre + "'" +
             ", fecha='" + fecha + "'" +
-            ", usuarios='" + usuarios + "'" +
+            ", categoriaNombre='" + categoriaNombre + "'" +
             "}";
     }
 
+    
 }

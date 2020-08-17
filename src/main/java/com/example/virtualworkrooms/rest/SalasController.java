@@ -1,9 +1,12 @@
 package com.example.virtualworkrooms.rest;
 
 import java.net.URI;
+import java.net.URLDecoder;
+import java.nio.charset.StandardCharsets;
 import java.util.List;
 
 import com.example.virtualworkrooms.controlador.ControladorSalas;
+import com.example.virtualworkrooms.controlador.VirtualWorkRoomsException;
 import com.example.virtualworkrooms.modelo.Categoria;
 import com.example.virtualworkrooms.modelo.Mensaje;
 import com.example.virtualworkrooms.modelo.Sala;
@@ -19,28 +22,28 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 
-
 @RestController
 public class SalasController {
 
     @Autowired
     private ControladorSalas controladorSalas;
-    
 
     @GetMapping("/categorias")
-    public List<Categoria> allCategorias(){
+    public List<Categoria> allCategorias() {
         return controladorSalas.allCategorias();
     }
 
-    //TODO: parse uri
     @GetMapping("/categorias/{nombreCat}")
-    public Categoria one(@PathVariable String nombreCat){
+    public Categoria one(@PathVariable String nombreCat) {
+        nombreCat = URLDecoder.decode(nombreCat, StandardCharsets.UTF_8);
         return controladorSalas.getCategoria(nombreCat);
     }
 
     @PostMapping("/categorias/{nombreCat}/salas")
-    public ResponseEntity<?> newSala(@PathVariable String nombreCat, @RequestBody Sala sala) {
+    public ResponseEntity<?> newSala(@PathVariable String nombreCat, @RequestBody Sala sala)
+            throws VirtualWorkRoomsException {
         
+        nombreCat = URLDecoder.decode(nombreCat, StandardCharsets.UTF_8);
         Sala s = controladorSalas.newSala(nombreCat, sala);
         URI location = ServletUriComponentsBuilder
                         .fromCurrentRequest().path("/{id}")
@@ -50,27 +53,31 @@ public class SalasController {
 
     @GetMapping("/categorias/{nombreCat}/salas")
     public List<Sala> all(@PathVariable String nombreCat){
+        nombreCat = URLDecoder.decode(nombreCat, StandardCharsets.UTF_8);
         return controladorSalas.allSalas(nombreCat);
     }
 
     @GetMapping("/categorias/{nombreCat}/salas/{id}")
-    public Sala one(@PathVariable String nombreCat, @PathVariable String id){
+    public Sala one(@PathVariable String nombreCat, @PathVariable String id) throws VirtualWorkRoomsException {
+        nombreCat = URLDecoder.decode(nombreCat, StandardCharsets.UTF_8);
         return controladorSalas.getSala(nombreCat, id);
     }
    
     @PutMapping("/categorias/{nombreCat}/salas/{id}")
     public Sala updateSala(@PathVariable String nombreCat, @PathVariable String id, @RequestBody Sala sala){
+        nombreCat = URLDecoder.decode(nombreCat, StandardCharsets.UTF_8);
         return controladorSalas.updateSala(nombreCat, id, sala);
     }
 
     @DeleteMapping("/categorias/{nombreCat}/salas/{id}")
     public void deleteSala(@PathVariable String nombreCat, @PathVariable String id){
+        nombreCat = URLDecoder.decode(nombreCat, StandardCharsets.UTF_8);
         controladorSalas.deleteSala(nombreCat, id);
     }
 
     @PostMapping("/categorias/{nombreCat}/salas/{id}/mensajes")
-    public ResponseEntity<?> newMensaje(@PathVariable String nombreCat, @PathVariable String id, @RequestBody Mensaje msj){
-        Mensaje mensaje = controladorSalas.newMensaje(nombreCat, id, msj);
+    public ResponseEntity<?> newMensaje(@PathVariable String id, @RequestBody Mensaje msj){
+        Mensaje mensaje = controladorSalas.newMensaje(id, msj);
         URI location = ServletUriComponentsBuilder
                         .fromCurrentRequest().path("/{id}")
                         .buildAndExpand(mensaje.getId()).toUri();
@@ -78,22 +85,22 @@ public class SalasController {
     }
 
     @GetMapping("/categorias/{nombreCat}/salas/{id}/mensajes")
-    public List<Mensaje> allMensajes(@PathVariable String nombreCat, @PathVariable String id){
-        return controladorSalas.getMensajes(nombreCat, id);
+    public List<Mensaje> allMensajes(@PathVariable String id){
+        return controladorSalas.getMensajes(id);
     }
 
     @GetMapping("/categorias/{nombreCat}/salas/{id}/mensajes/{idMsj}")
-    public Mensaje oneMensaje(@PathVariable String nombreCat, @PathVariable String id, @PathVariable String idMsj){
-        return controladorSalas.getMensaje(nombreCat, id, idMsj);
+    public Mensaje oneMensaje(@PathVariable String id, @PathVariable String idMsj) throws VirtualWorkRoomsException {
+        return controladorSalas.getMensaje(id, idMsj);
     }
 
     @PutMapping("/categorias/{nombreCat}/salas/{id}/mensajes/{idMsj}")
-    public Mensaje updateMensaje(@PathVariable String nombreCat, @PathVariable String id, @PathVariable String idMsj){
-        return controladorSalas.updateMensaje(nombreCat, id, idMsj);
+    public Mensaje updateMensaje(@PathVariable String idMsj, @RequestBody Mensaje msj){
+        return controladorSalas.updateMensaje(idMsj, msj);
     }
 
     @DeleteMapping("/categorias/{nombreCat}/salas/{id}/mensajes/{idMsj}")
-    public void deleteMensaje(@PathVariable String nombreCat, @PathVariable String id, @PathVariable String idMsj){
-        controladorSalas.deleteMensaje(nombreCat, id, idMsj);
+    public void deleteMensaje(@PathVariable String idMsj){
+        controladorSalas.deleteMensaje(idMsj);
     }
 }

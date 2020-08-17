@@ -7,4 +7,6 @@ import org.springframework.stereotype.Component;
 
 @Component("categoriasRepositorio")
 public interface CategoriasRepositorio extends MongoRepository<Categoria, String>{
+
+	Categoria findByNombre();
 }

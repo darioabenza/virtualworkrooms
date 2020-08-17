@@ -14,22 +14,22 @@ public interface ControladorSalas {
 
 	Sala newSala(String nombreCat, Sala sala);
 
-	void deleteSala(String id, String id2);
+	void deleteSala(String nombreCat, String id);
 
 	List<Sala> allSalas(String nombreCat);
 
-	Sala updateSala(String id, String id2, Sala sala);
+	Sala updateSala(String nombreCat, String id, Sala sala);
 
-	Sala getSala(String nombreCat, String id);
+	Sala getSala(String nombreCat, String id) throws VirtualWorkRoomsException;
 
-	Mensaje newMensaje(String nombreCat, String id, Mensaje msj);
+	Mensaje newMensaje(String idSala, Mensaje idMsj);
 
-	List<Mensaje> getMensajes(String nombreCat, String id);
+	List<Mensaje> getMensajes(String idSala);
 
-	Mensaje getMensaje(String nombreCat, String id, String idMsj);
+	Mensaje getMensaje(String idSala, String idMsj) throws VirtualWorkRoomsException;
 
-	Mensaje updateMensaje(String nombreCat, String id, String idMsj);
+	Mensaje updateMensaje(String idMsj, Mensaje msj);
 
-	void deleteMensaje(String nombreCat, String id, String idMsj);
+	void deleteMensaje(String idMsj);
     
 }

@@ -1,7 +1,5 @@
 package com.example.virtualworkrooms.modelo;
 
-import java.util.List;
-
 import org.springframework.data.annotation.Id;
 
 public class Categoria {
@@ -9,7 +7,6 @@ public class Categoria {
     private String id;
 
     private String nombre;
-    private List<Sala> salas;
 
     public Categoria(String nombre){
         this.nombre = nombre;
@@ -31,20 +28,13 @@ public class Categoria {
         this.nombre = nombre;
     }
 
-    public List<Sala> getSalas() {
-        return this.salas;
-    }
-
-    public void setSalas(List<Sala> salas) {
-        this.salas = salas;
-    }
 
     @Override
     public String toString() {
         return "{" +
-            " id='" + getId() + "'" +
-            ", nombre='" + getNombre() + "'" +
-            ", salas='" + getSalas() + "'" +
+            " id='" + id + "'" +
+            ", nombre='" + nombre + "'" +
             "}";
     }
+
 }
