@@ -3,14 +3,14 @@
     text-decoration: none;
     opacity: 0.8;
     background-color: rgb(96,189,255);
-  }
-  
-  #categoria .card:hover {
-    text-decoration: none;
-    opacity: 0.8;
-  }
-  
-  #categorias .card {
+}
+
+
+#categoria a:hover{
+    text-decoration: underline #4b4c4d;
+}
+
+#categorias .card {
     background: #096fb7;
     margin: 20px;
     padding: 30px;
@@ -19,14 +19,14 @@
     height: 80%;
     color: rgb(35,38,40);
     font-size: 40px;
-  }
-  @media (max-width: 1000px){
-        #categorias .card, #categorias .card h2{
-            font-size:30px;
-        }
-  }
-  
-  #categoria .card {
+}
+@media (max-width: 1000px){
+    #categorias .card, #categorias .card h2{
+        font-size:30px;
+    }
+}
+
+#categoria .card {
     background: #4870aa;
     margin: 10px;
     padding: 5px;
@@ -35,83 +35,72 @@
     text-align: left;
     text-indent: 20px;
     border: 2px solid;
-  }
-  
-  body {
+}
+
+body {
     background: rgb(47,52,56);
     padding: 20px;
-  }
-  
-  .navbar-title, .navbar-title:hover {
+}
+
+.navbar-title, .navbar-title:hover {
     font-family: Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;
     font-size: 3vw;
     text-decoration: none;
     color: #4870aa;
-  }
+}
 
-  .navbar {
+.navbar {
     background: white;
     border-radius: 10px;
-  }
-  
-  h1 {
+}
+
+h1 {
     color: rgb(255,255,255);
     padding-top: 30px;
-  }
-  
-  #categorias a {
+}
+
+#categorias a {
     text-decoration: inherit;
-  }
-  
-  nav .btn:hover {
+}
+
+nav .btn:hover {
     background-color: #4870aa;
-  }
-  
-  #categoria h2 {
-    font-size: 30px;
-  }
-  
-  #categoria .row {
-    background-color: rgb(127,127,127);
-    border: 1px solid;
-    color: rgb(47,52,56);
-    margin: 10px;
-  }
-  
-  #categoria a {
+}
+
+.footer {
+    padding: 40px 0;
+    background-color: white;
+    color: #4b4c4d;
+    text-align: center;
+}
+
+.footer .social{
+    padding-bottom: 20px;
+}
+
+.footer .social a{
     color: inherit;
-    text-decoration: none;
-  }
-  
-  .form-control {
-    background-color: #7f7f7f;
-  }
+    font-size: 40px;
+    opacity: 0.75;
+    margin: 10px;
+}
 
-  .footer {
-      padding: 40px 0;
-      background-color: white;
-      color: #4b4c4d;
-      text-align: center;
-  }
-
-  .footer .social{
-      padding-bottom: 20px;
-  }
-
-  .footer .social a{
-      color: inherit;
-      font-size: 40px;
-      opacity: 0.75;
-      margin: 10px;
-  }
-
-  .footer  a:hover{
+.footer  a:hover{
     opacity: 1;
 }
 
-  .footer ul a{
-      color: inherit;
-      font-size:20px;
-      opacity: 0.75;
-      margin:10px;
-  }
+.footer ul a{
+    color: inherit;
+    font-size:20px;
+    opacity: 0.75;
+    margin:10px;
+}
+
+.btn-primary{
+    background:#4870aa;
+    color:black;
+}
+
+.btn-primary:hover{
+    background:#355381;
+}
