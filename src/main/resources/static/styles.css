@@ -53,11 +53,11 @@ body {
 .navbar {
     background: white;
     border-radius: 10px;
+    padding-bottom: 30px;
 }
 
 h1 {
     color: rgb(255,255,255);
-    padding-top: 30px;
 }
 
 #categorias a {
@@ -73,6 +73,7 @@ nav .btn:hover {
     background-color: white;
     color: #4b4c4d;
     text-align: center;
+    border-radius: 10px;
 }
 
 .footer .social{
@@ -104,4 +105,42 @@ nav .btn:hover {
 
 .btn-primary:hover{
     background:#355381;
+}
+
+
+
+#sala .panel-heading{
+    background: #4870aa;
+    color:rgb(35,38,40);
+    border-bottom: 2px solid rgb(35,38,40);
+    padding: 10px;
+}
+
+#sala .panel-body{
+    background: white;
+    max-height: 70vh;
+    overflow-y: scroll;
+}
+
+#sala ul{
+    list-style: none;
+    padding-left: 10px;
+}
+
+#mensajes .panel-body{
+    display: flex;
+    flex-direction: column-reverse;
+}
+
+
+.avatar-marco{
+    width: 50px;
+    height: 50px;
+    display: inline-table;
+}
+
+.avatar-img{
+    max-width: 100%;
+    max-height: 100%;
+    display: block;
 }
