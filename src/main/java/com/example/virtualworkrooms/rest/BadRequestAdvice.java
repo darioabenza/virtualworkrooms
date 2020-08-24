@@ -1,6 +1,5 @@
 package com.example.virtualworkrooms.rest;
 
-import com.example.virtualworkrooms.controlador.NotFoundException;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -8,13 +7,13 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
 
 @ControllerAdvice
-public class NotFoundAdvice {
-
+public class BadRequestAdvice {
     @ResponseBody
-    @ExceptionHandler(NotFoundException.class)
-    @ResponseStatus(HttpStatus.NOT_FOUND)
-    String notFoundHandler(NotFoundException e){
+    @ExceptionHandler(IllegalArgumentException.class)
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    String badRequestHandler(IllegalArgumentException e){
         return e.getMessage();
     }
+    
     
 }

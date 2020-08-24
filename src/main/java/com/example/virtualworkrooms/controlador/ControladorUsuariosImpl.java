@@ -17,13 +17,15 @@ public class ControladorUsuariosImpl implements ControladorUsuarios {
     private UsuariosRepositorio usuariosRepositorio;
 
     @Override
-    public Usuario registrarUsuario(Usuario u) throws VirtualWorkRoomsException {
+    public Usuario registrarUsuario(Usuario u) {
         if (usuariosRepositorio.findByEmail(u.getEmail()) != null)
-            throw new VirtualWorkRoomsException("El email con el que se intenta registrar ya está en uso.");
+            throw new IllegalArgumentException("El email con el que se intenta registrar ya está en uso.");
         if (usuariosRepositorio.findByNombre(u.getNombre()) != null)
-            throw new VirtualWorkRoomsException("El nombre de usuario con el que se intenta registrar ya está en uso.");
+            throw new IllegalArgumentException("El nombre de usuario con el que se intenta registrar ya está en uso.");
+        
         u.setFechaRegistro(LocalDateTime.now());
         Usuario usuario = usuariosRepositorio.insert(u);
+        
         return usuario;
     }
 

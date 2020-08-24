@@ -4,7 +4,6 @@ import java.net.URI;
 import java.util.List;
 
 import com.example.virtualworkrooms.controlador.ControladorUsuarios;
-import com.example.virtualworkrooms.controlador.VirtualWorkRoomsException;
 import com.example.virtualworkrooms.modelo.Usuario;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,7 +23,7 @@ public class UsuariosController {
     private ControladorUsuarios controladorUsuarios;
 
     @PostMapping("/usuarios")
-    public ResponseEntity<?> registrarUsuario(@RequestBody Usuario u) throws VirtualWorkRoomsException {
+    public ResponseEntity<?> registrarUsuario(@RequestBody Usuario u) {
         Usuario usuario = controladorUsuarios.registrarUsuario(u);
         URI location = ServletUriComponentsBuilder
                         .fromCurrentRequest().path("/{id}")
