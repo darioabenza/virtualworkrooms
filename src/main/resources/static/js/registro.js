@@ -1,7 +1,7 @@
 function registrar(){
     var nombre = $("#nombre").val()
     var email = $("#email").val()
-    var password = $("#contraseña").val()
+    var password = $("#password").val()
     $.ajax({
         type: "POST",
         url: "/usuarios",
@@ -11,10 +11,10 @@ function registrar(){
             password: password,
         },
         success: function (response){
-            if (response.status = "400"){
+            if (response.status == "400"){
                 $("p.text-danger").html(response.body)
             }
-            else if (response.status = "200"){
+            else if (response.status == "200"){
 
             }
         },
@@ -42,15 +42,15 @@ function validar(){
        return false
     }
     $("#email").css("border-color","")
-    if($("#contraseña").val().length < 6
-    || !passwreg.test($("#contraseña").val())){
-        $("#contraseña").tooltip("show")
-        $("#contraseña").css("border-color","red")
-        $("#contraseña").focus()
+    if($("#password").val().length < 6
+    || !passwreg.test($("#password").val())){
+        $("#password").tooltip("show")
+        $("#password").css("border-color","red")
+        $("#password").focus()
         return false
     }
-    $("#contraseña").css("border-color","")
-    if($("#confirmarContraseña").val() != $("#contraseña").val()){
+    $("#password").css("border-color","")
+    if($("#confirmarContraseña").val() != $("#password").val()){
         $("#confirmarContraseña").tooltip("show")
         $("#confirmarContraseña").css("border-color","red")
         $("#confirmarContraseña").focus()
