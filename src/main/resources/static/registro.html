@@ -34,6 +34,7 @@
             $("#footer").load("footer.html"); 
         });
     </script>
+    <script src="js/registro.js"></script>
     <link rel="stylesheet" href="styles.css" />
 </head>
 
@@ -43,7 +44,7 @@
         <div class="row justify-content-center">
             <div class="col-md-8 col-lg-6 col-xl-4">
                 <div class="card">
-                    <div class="card-body">
+                    <div id="registro" class="card-body">
                         <h3 class="card-title">Registro</h3>
                         <div class="form-group">
                             <label for="nombre">Nombre</label>
@@ -55,24 +56,10 @@
                               data-container="body"
                               data-toggle="tooltip"
                               data-placement="right"
-                              title="Inserta tu nombre"
+                              title="Campo obligatorio. Este nombre será visible para los demás usuarios"
                               name="nombre"
                             />
                           </div>
-                          <div class="form-group">
-                          <label for="apellidos">Apellidos</label>
-                            <input
-                              type="text"
-                              class="form-control"
-                              id="apellidos"
-                              placeholder="Apellidos"
-                              data-container="body"
-                              data-toggle="tooltip"
-                              data-placement="right"
-                              title="Inserta tus apellidos"
-                              name="apellidos"
-                            />
-                        </div>
                           <div class="form-group">
                             <label for="email">Correo electrónico</label>
                             <input
@@ -114,9 +101,10 @@
                               title="Las contraseñas deben coincidir"
                             />
                           </div>
+                          <p class="text-danger"></p>
                           <button
                             class="btn btn-primary col-12"
-                            id="registrar"
+                            id="boton-registrar"
                             type="submit"
                           >
                             Crear cuenta
