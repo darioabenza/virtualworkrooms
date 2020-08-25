@@ -29,13 +29,19 @@
 
 #categoria .card {
     background: #4870aa;
-    margin: 10px;
-    padding: 5px;
     color: rgb(35,38,40);
     font-size: 25px;
-    text-align: left;
-    text-indent: 20px;
+    text-align: center;
     border: 2px solid;
+    
+}
+
+#categoria tr td{
+    border: none;
+}
+
+#categoria ul{
+    list-style: none;
 }
 
 body {
