@@ -2,9 +2,9 @@ function log() {
     var email = $("#email").val();
     var password = $("#password").val();
     $.ajax({type: "POST",
-    url: "/usuarios/login",
+    url: "/login",
     data: {
-        email: email,
+        username: email,
         password: password,
     },
     success: function (response){
@@ -17,6 +17,7 @@ function log() {
     },
     dataType: "json",
 })
+console.log("enviando")
 }
 
 var emailreg = /^[a-zA-Z0-9.!#$%&’*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/
