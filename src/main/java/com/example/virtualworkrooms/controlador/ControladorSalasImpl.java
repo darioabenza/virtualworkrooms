@@ -39,7 +39,7 @@ public class ControladorSalasImpl implements ControladorSalas {
 
     @Override
     public Sala newSala(String nombreCat, Sala sala) {
-        Categoria c = categoriasRepositorio.findByNombre();
+        Categoria c = categoriasRepositorio.findByNombre(nombreCat);
         if(c==null)
             throw new NotFoundException("Categoría no encontrada");
         
@@ -60,7 +60,7 @@ public class ControladorSalasImpl implements ControladorSalas {
 
     @Override
     public Sala updateSala(String nombreCat, String id, Sala sala) {
-        Categoria c = categoriasRepositorio.findByNombre();
+        Categoria c = categoriasRepositorio.findByNombre(nombreCat);
         if(c==null)
             throw new NotFoundException("Categoría no encontrada");
         Optional<Sala> s = salasRepositorio.findById(id);
