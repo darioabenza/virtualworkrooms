@@ -1,8 +1,11 @@
 package com.example.virtualworkrooms.modelo;
 
 import java.time.LocalDateTime;
+import java.util.LinkedList;
+import java.util.List;
 
 import org.springframework.data.annotation.Id;
+import org.springframework.data.annotation.Transient;
 
 public class Sala {
 
@@ -11,6 +14,9 @@ public class Sala {
     private String nombre;
     private LocalDateTime fecha;
     private String categoriaNombre;
+    private List<Mensaje> mensajes;
+    @Transient
+    private List<Usuario> participantes;
 
 
     public Sala(String nombre, LocalDateTime fecha, String categoriaNombre) {
@@ -52,6 +58,40 @@ public class Sala {
         this.categoriaNombre = categoriaNombre;
     }
    
+    public List<Mensaje> getMensajes() {
+        return this.mensajes;
+    }
+
+    public void setMensajes(List<Mensaje> mensajes) {
+        this.mensajes = mensajes;
+    }
+
+
+    public List<Usuario> getParticipantes() {
+        return this.participantes;
+    }
+
+    public void setParticipantes(List<Usuario> participantes) {
+        this.participantes = participantes;
+    }
+
+    public void addParticipante(Usuario participante){
+        if(participantes == null){
+            participantes = new LinkedList<Usuario>();
+        }
+        participantes.add(participante);
+    }
+
+    public void deleteParticipante(String id){
+        participantes.removeIf(p->p.getId() == id);
+    }
+
+    public void addMensaje(Mensaje mensaje){
+        if(mensajes == null){
+            mensajes = new LinkedList<Mensaje>();
+        }
+        mensajes.add(mensaje);
+    }
 
     @Override
     public String toString() {
@@ -60,8 +100,8 @@ public class Sala {
             ", nombre='" + nombre + "'" +
             ", fecha='" + fecha + "'" +
             ", categoriaNombre='" + categoriaNombre + "'" +
+            ", mensajes='" + mensajes + "'" +
+            ", participantes='" + participantes + "'" +
             "}";
     }
-
-    
 }
