@@ -7,7 +7,7 @@ function getSalas(){
         let lista = $("table.table")
         for(let sala of data){
             lista.append("<tr><td>\
-                    <a href=\"/sala.html?id="+sala.id+"\">\
+                    <a href=\"/sala.html?categoria="+categoria+"&id="+sala.id+"&nombre="+sala.nombre+"\">\
                     <div class=\"card\">\
                     <p>"+sala.nombre+"</p>\
                     </div></td></tr>")
