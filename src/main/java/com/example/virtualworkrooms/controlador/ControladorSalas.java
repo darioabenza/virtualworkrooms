@@ -25,11 +25,5 @@ public interface ControladorSalas {
 	Mensaje newMensaje(String idSala, Mensaje idMsj);
 
 	List<Mensaje> getMensajes(String idSala);
-
-	Mensaje getMensaje(String idSala, String idMsj) throws VirtualWorkRoomsException;
-
-	Mensaje updateMensaje(String idMsj, Mensaje msj);
-
-	void deleteMensaje(String idMsj);
     
 }

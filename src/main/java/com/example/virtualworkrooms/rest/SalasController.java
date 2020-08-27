@@ -10,6 +10,7 @@ import com.example.virtualworkrooms.controlador.VirtualWorkRoomsException;
 import com.example.virtualworkrooms.modelo.Categoria;
 import com.example.virtualworkrooms.modelo.Mensaje;
 import com.example.virtualworkrooms.modelo.Sala;
+import com.example.virtualworkrooms.modelo.Usuario;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -88,19 +89,11 @@ public class SalasController {
     public List<Mensaje> allMensajes(@PathVariable String id){
         return controladorSalas.getMensajes(id);
     }
-
-    @GetMapping("/categorias/{nombreCat}/salas/{id}/mensajes/{idMsj}")
-    public Mensaje oneMensaje(@PathVariable String id, @PathVariable String idMsj) throws VirtualWorkRoomsException {
-        return controladorSalas.getMensaje(id, idMsj);
+    //TODO
+/*
+    @PostMapping("/categorias/{nombreCat}/salas/{id}/participantes")
+    public ResponseEntity<?> newParticipante(@PathVariable String id, @RequestBody Usuario participante){
+        
     }
-
-    @PutMapping("/categorias/{nombreCat}/salas/{id}/mensajes/{idMsj}")
-    public Mensaje updateMensaje(@PathVariable String idMsj, @RequestBody Mensaje msj){
-        return controladorSalas.updateMensaje(idMsj, msj);
-    }
-
-    @DeleteMapping("/categorias/{nombreCat}/salas/{id}/mensajes/{idMsj}")
-    public void deleteMensaje(@PathVariable String idMsj){
-        controladorSalas.deleteMensaje(idMsj);
-    }
+    */
 }

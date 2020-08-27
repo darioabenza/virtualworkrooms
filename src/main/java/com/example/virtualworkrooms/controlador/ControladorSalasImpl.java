@@ -1,8 +1,11 @@
 package com.example.virtualworkrooms.controlador;
 
 import java.time.LocalDateTime;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 import com.example.virtualworkrooms.modelo.Categoria;
 import com.example.virtualworkrooms.modelo.Mensaje;
@@ -18,11 +21,26 @@ import org.springframework.stereotype.Component;
 public class ControladorSalasImpl implements ControladorSalas {
 
     @Autowired
-    CategoriasRepositorio categoriasRepositorio;
+    private CategoriasRepositorio categoriasRepositorio;
     @Autowired
-    SalasRepositorio salasRepositorio;
+    private SalasRepositorio salasRepositorio;
     @Autowired
-    MensajesRepositorio mensajesRepositorio;
+    private MensajesRepositorio mensajesRepositorio;
+
+    /*
+        Este catálogo mantiene en memoria el estado de todas las salas.
+        El objetivo es disminuir el número de accesos a la BD y
+        aumentar la eficiencia con la que se actualiza la lista de
+        participantes, evitando guardar esta lista en la BD.
+    */
+    private Map<String, Sala>salasCatalogo;
+
+    public ControladorSalasImpl(){
+        salasCatalogo = new HashMap<String, Sala>();
+        for(Sala s : salasRepositorio.findAll()){
+            salasCatalogo.put(s.getId(), s);
+        }
+    }
 
     @Override
     public List<Categoria> allCategorias() {
@@ -45,18 +63,24 @@ public class ControladorSalasImpl implements ControladorSalas {
         
         sala.setFecha(LocalDateTime.now());
         sala.setCategoriaNombre(nombreCat);
+        salasCatalogo.put(sala.getId(), sala);
         return salasRepositorio.save(sala);
     }
 
     @Override
     public void deleteSala(String nombreCat, String id) {
+        salasCatalogo.remove(id);
         salasRepositorio.deleteById(id);
     }
 
     @Override
     public List<Sala> allSalas(String nombreCat) {
-        return salasRepositorio.findAllByCategoriaNombre(nombreCat);
+        return salasCatalogo.values()
+            .stream()
+            .filter(sala -> sala.getCategoriaNombre()==nombreCat)
+            .collect(Collectors.toList());
     }
+
 
     @Override
     public Sala updateSala(String nombreCat, String id, Sala sala) {
@@ -68,64 +92,49 @@ public class ControladorSalasImpl implements ControladorSalas {
             s.get().setFecha(sala.getFecha());
             s.get().setNombre(sala.getNombre());
             s.get().setCategoriaNombre(c.getNombre());
-            return salasRepositorio.save(s.get());
+            s.get().setMensajes(sala.getMensajes());
+            salasRepositorio.save(s.get());
+            // se devuelve la sala del catálogo ya que en el repositorio no se guardan los usuarios
+            salasCatalogo.put(id, sala);
+            return sala;
         } else throw new NotFoundException("Sala no encontrada");
     }
 
     @Override
     public Sala getSala(String nombreCat, String id) throws VirtualWorkRoomsException {
-        Optional<Sala> s = salasRepositorio.findById(id);
-        if(!s.isPresent())
+        Sala s = salasCatalogo.get(id);
+        if(s == null)
             throw new NotFoundException("Sala no encontrada");
-        if(!s.get().getCategoriaNombre().equals(nombreCat))
+        if(!s.getCategoriaNombre().equals(nombreCat))
             throw new VirtualWorkRoomsException("Categoría incorrecta");
-        return s.get();
+        return s;
     }
 
     @Override
     public Mensaje newMensaje(String idSala, Mensaje msj) {
-        Optional<Sala> s = salasRepositorio.findById(idSala);
-        if(!s.isPresent())
+        //Actualizar repositorio de Mensajes y añadir mensaje a sala en repositorio y catálogo
+
+        Sala s = salasCatalogo.get(idSala);
+        if(s == null)
             throw new NotFoundException("Sala no encontrada");
         msj.setFecha(LocalDateTime.now());
         msj.setSalaId(idSala);
+        s.addMensaje(msj);
+        Optional <Sala> salaEnRepo = salasRepositorio.findById(idSala);
+        if(salaEnRepo.isPresent()){
+            salaEnRepo.get().addMensaje(msj);
+            salasRepositorio.save(salaEnRepo.get());
+        }
         return mensajesRepositorio.save(msj);
     }
 
     @Override
     public List<Mensaje> getMensajes(String idSala) {
-        Optional<Sala> s = salasRepositorio.findById(idSala);
-        if(!s.isPresent())
+        Sala sala = salasCatalogo.get(idSala);
+        if(sala == null)
             throw new NotFoundException("Sala no encontrada");
-        return mensajesRepositorio.findAllBySalaId(idSala);
+        return sala.getMensajes();
     }
 
-    @Override
-    public Mensaje getMensaje(String idSala, String idMsj) throws VirtualWorkRoomsException {
-        Optional<Mensaje> msj = mensajesRepositorio.findById(idMsj);
-        if(!msj.isPresent())
-            throw new NotFoundException("Mensaje no encontrado");
-        if(!msj.get().getSalaId().equals(idSala))
-            throw new VirtualWorkRoomsException("Sala incorrecta");
-        return msj.get();
-    }
-
-    @Override
-    public Mensaje updateMensaje(String idMsj, Mensaje msj) {
-        Optional<Mensaje> mensaje = mensajesRepositorio.findById(idMsj);
-        if(mensaje.isPresent()){
-            mensaje.get().setAutor(msj.getAutor());
-            mensaje.get().setFecha(msj.getFecha());
-            mensaje.get().setMedia(msj.getMedia());
-            mensaje.get().setTexto(msj.getTexto());
-            return mensajesRepositorio.save(mensaje.get());
-        } else throw new NotFoundException("Mensaje no encontrado");
-    }
-
-    @Override
-    public void deleteMensaje(String idMsj) {
-        mensajesRepositorio.deleteById(idMsj);
-
-    }
     
 }
