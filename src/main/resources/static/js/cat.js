@@ -15,7 +15,31 @@ function getSalas(){
     })
 }
 
+//crea la sala y el usuario entra automáticamente
+function crearSala(){
+    let url="/categorias/"+categoria+"/salas"
+    let nombre=$("#nombre").val()
+    $.ajax({
+        type: "POST",
+        url: url,
+        data: JSON.stringify({
+            nombre: nombre
+        }),
+        success: function(data, status, xhr){
+            if(status=="success"){
+                let location = xhr.getResponseHeader("Location")
+                let id = location.split("/").pop()
+                console.log(id)
+                window.location.href="sala.html?categoria="+categoria+"&id="+id+"&nombre="+nombre
+            }
+            
+        },
+        contentType: "application/json",
+    })
+}
+
 $(document).ready(function(){
-    $("h1").append(categoria)
+    $("h1").append(decodeURIComponent(categoria))
     getSalas()
+    $("#botonCrearSala").click(crearSala)
 })

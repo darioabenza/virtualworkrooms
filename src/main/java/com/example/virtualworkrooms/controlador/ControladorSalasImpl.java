@@ -35,7 +35,12 @@ public class ControladorSalasImpl implements ControladorSalas {
     */
     private Map<String, Sala>salasCatalogo;
 
-    public ControladorSalasImpl(){
+    public ControladorSalasImpl(CategoriasRepositorio categoriasRepositorio,
+            SalasRepositorio salasRepositorio, MensajesRepositorio mensajesRepositorio){
+        
+        this.categoriasRepositorio = categoriasRepositorio;
+        this.salasRepositorio = salasRepositorio;
+        this.mensajesRepositorio = mensajesRepositorio;
         salasCatalogo = new HashMap<String, Sala>();
         for(Sala s : salasRepositorio.findAll()){
             salasCatalogo.put(s.getId(), s);
@@ -63,8 +68,9 @@ public class ControladorSalasImpl implements ControladorSalas {
         
         sala.setFecha(LocalDateTime.now());
         sala.setCategoriaNombre(nombreCat);
-        salasCatalogo.put(sala.getId(), sala);
-        return salasRepositorio.save(sala);
+        Sala salaOut =  salasRepositorio.save(sala);
+        salasCatalogo.put(salaOut.getId(), salaOut);
+        return salaOut;
     }
 
     @Override
@@ -77,7 +83,7 @@ public class ControladorSalasImpl implements ControladorSalas {
     public List<Sala> allSalas(String nombreCat) {
         return salasCatalogo.values()
             .stream()
-            .filter(sala -> sala.getCategoriaNombre()==nombreCat)
+            .filter(sala -> sala.getCategoriaNombre().equals(nombreCat))
             .collect(Collectors.toList());
     }
 

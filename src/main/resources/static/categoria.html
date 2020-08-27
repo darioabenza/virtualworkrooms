@@ -43,10 +43,39 @@
     <section id="categoria">
         <div class="container">
             <h1></h1>
+            <button class="btn btn-primary" data-toggle="modal" data-target="#crearSalaModal">
+                 <strong>+</strong> Crear sala
+            </button>
             <table class="table">
                     
             </table>
-
+            <div id="crearSalaModal" class="modal" tabindex="-1" role="dialog">
+                <div class="modal-dialog" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h3 class="modal-title">Crear sala</h3>
+                        </div>
+                        <div class="modal-body">
+                            <div class="form-group">
+                                <label for="nombre">Nombre</label>
+                                <input
+                                    type="text"
+                                    class="form-control"
+                                    id="nombre"
+                                    placeholder="Nombre de la sala"
+                                    required
+                                />
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
+                            <button id="botonCrearSala" type="button" class="btn btn-primary">Crear</button>
+                        </div>
+                    </div>
+                </div>
+                
+                
+            </div>
         </div>
     </section>
     <div id="footer"></div>

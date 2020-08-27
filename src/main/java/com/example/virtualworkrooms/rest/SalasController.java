@@ -10,7 +10,6 @@ import com.example.virtualworkrooms.controlador.VirtualWorkRoomsException;
 import com.example.virtualworkrooms.modelo.Categoria;
 import com.example.virtualworkrooms.modelo.Mensaje;
 import com.example.virtualworkrooms.modelo.Sala;
-import com.example.virtualworkrooms.modelo.Usuario;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -45,6 +44,7 @@ public class SalasController {
             throws VirtualWorkRoomsException {
         
         nombreCat = URLDecoder.decode(nombreCat, StandardCharsets.UTF_8);
+        System.out.println(nombreCat);
         Sala s = controladorSalas.newSala(nombreCat, sala);
         URI location = ServletUriComponentsBuilder
                         .fromCurrentRequest().path("/{id}")

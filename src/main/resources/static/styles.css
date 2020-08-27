@@ -22,7 +22,7 @@
     font-size: 40px;
 }
 @media (max-width: 1000px){
-    #categorias .card, #categorias .card h2{
+    #categorias .card, #categorias .card h3{
         font-size:30px;
     }
 }
@@ -109,7 +109,7 @@ nav .btn:hover {
     color:black;
 }
 
-.btn-primary:hover{
+.btn-primary:hover, .btn-primary:focus{
     background:#355381;
 }
 
