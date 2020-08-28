@@ -8,6 +8,11 @@ import com.example.virtualworkrooms.modelo.Usuario;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.BadCredentialsException;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -21,6 +26,26 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 public class UsuariosController {
     @Autowired
     private ControladorUsuarios controladorUsuarios;
+    @Autowired
+    private AuthenticationManager authenticationManager;
+    @Autowired
+    private UserDetailsService userDetailsService;
+    @Autowired
+    private JwtUtil jwtUtil;
+
+
+    @PostMapping("/autenticacion")
+    public ResponseEntity<?> newAuthenticationToken(@RequestBody AuthenticationRequest authenticationRequest) throws Exception{
+        try{
+            authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(authenticationRequest.getNombre(),authenticationRequest.getPassword()));
+        } catch (BadCredentialsException e){
+            throw new Exception("Nombre o contraseña incorrectos", e);
+        }
+        UserDetails userDetails = userDetailsService
+            .loadUserByUsername(authenticationRequest.getNombre());
+        String jwt = jwtUtil.generateToken(userDetails);
+        return ResponseEntity.ok(new AuthenticationResponse(jwt));
+    }
 
     @PostMapping("/usuarios")
     public ResponseEntity<?> registrarUsuario(@RequestBody Usuario u) {
