@@ -6,12 +6,19 @@ function getSalas(){
     $.getJSON(url, function(data){
         let lista = $("table.table")
         for(let sala of data){
+            //la sala General debería estar siempre al principio
+            if(sala.nombre == "General"){
+                $("#salaGeneral").append("<a href=\"/sala.html?categoria="+categoria+"&id="+sala.id+"&nombre="+sala.nombre+"\">\
+                <div class=\"card\">\
+                <p>"+sala.nombre+"</p></div>")
+                continue
+            }
             lista.append("<tr><td>\
                     <a href=\"/sala.html?categoria="+categoria+"&id="+sala.id+"&nombre="+sala.nombre+"\">\
                     <div class=\"card\">\
                     <p>"+sala.nombre+"</p>\
                     </div></td></tr>")
-    }
+        }
     })
 }
 

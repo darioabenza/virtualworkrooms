@@ -44,13 +44,13 @@
             </div>
         </div>
         <div class="row">
-            <div class="col-8">
+            <div class="col-9">
                 <div id="mensajes" class="panel">
                     <div class="panel-heading">
                         <i class="fa fa-comment"></i> Comparte tu trabajo
                     </div>
                     <div class="panel-body">
-                        <ul>
+                        <ul id="mensajesLista">
                             <li>
                                 <div class="avatar-marco">
                                     <img class="avatar-img" src="logo.png"/>
@@ -77,7 +77,7 @@
                                     <span><strong>Darío Abenza</strong></span>
                                 </div>
                                 <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Curabitur bibendum ornare
-                                    dolor, quis ullamcorper ligula sodales.</p>
+                                    dolor, quis ullamcorper ligula sodales.<iframe width="560" height="315" src="https://www.youtube.com/embed/S0Zk3HWO6Nw" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe></p>
                             </li>
                             <li>
                                 <div class="header">
@@ -145,22 +145,25 @@
                         <div class="input-group">
                             <textarea class="form-control" placeholder="En qué estás trabajando..."></textarea>
                             <div class="input-group-append">
-                                <button class="btn btn-primary" type="button">Enviar</button>
+                                <button id="enviarMensaje" class="btn btn-primary" type="button">Enviar</button>
                             </div>
                         </div>
                     </div>
                 </div>
             </div> 
-            <div class="col-4">
+            <div class="col-3">
                 <div id="participantes" class="panel">
                     <div class="panel-heading">
                         <i class="fa fa-user"></i>
                         Participantes
                     </div>
                     <div class="panel-body">
-                        <ul>
+                        <ul id="participantesLista">
                             <li>
-                                <p>holi 1</p>
+                                <div class="avatar-marco">
+                                    <img class="avatar-img" src="logo.png"/>
+                                </div>
+                                <span>holi 1</span>
                             </li>
                             <li>
                                 <p>holi 2</p>
