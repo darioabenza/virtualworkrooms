@@ -5,9 +5,12 @@ import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import org.springframework.stereotype.Service;
 
+import java.io.File;
+import java.io.FileNotFoundException;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Scanner;
 import java.util.function.Function;
 
 import com.example.virtualworkrooms.controlador.VirtualWorkRoomsException;
@@ -16,7 +19,25 @@ import com.example.virtualworkrooms.modelo.Usuario;
 @Service
 public class JwtUtil {
 
-    private String SECRET_KEY = "secret";
+    private final String SECRET_KEY_ROUTE = "./src/main/resources/secret";
+    private String secretKey;
+
+    public JwtUtil() throws VirtualWorkRoomsException {
+        secretKey = "";
+        File secret = new File(SECRET_KEY_ROUTE);
+        try {
+            Scanner scanner = new Scanner(secret);
+            while(scanner.hasNext()){
+                secretKey +=scanner.next();
+            }
+
+            System.out.println("secret: "+secretKey);
+            scanner.close();
+        } catch (FileNotFoundException e) {
+            throw new VirtualWorkRoomsException("Error al abrir el archivo secret", e);
+        }
+
+    }
 
     public String extractUserId(String token) throws VirtualWorkRoomsException {
         return extractClaim(token, Claims::getSubject);
@@ -27,7 +48,7 @@ public class JwtUtil {
         return claimsResolver.apply(claims);
     }
     private Claims extractAllClaims(String token) throws VirtualWorkRoomsException{
-        return Jwts.parser().setSigningKey(SECRET_KEY).parseClaimsJws(token).getBody();
+        return Jwts.parser().setSigningKey(secretKey).parseClaimsJws(token).getBody();
     }
 
     public String generateToken(Usuario usuario) {
@@ -39,7 +60,7 @@ public class JwtUtil {
 
         return Jwts.builder().setClaims(claims).setSubject(subject).setIssuedAt(new Date(System.currentTimeMillis()))
                 .setExpiration(new Date(System.currentTimeMillis() + 1000 * 60 * 60 * 10))
-                .signWith(SignatureAlgorithm.HS256, SECRET_KEY).compact();
+                .signWith(SignatureAlgorithm.HS256, secretKey).compact();
     }
 
 }
