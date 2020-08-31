@@ -4,7 +4,9 @@ import java.util.List;
 
 import com.example.virtualworkrooms.modelo.Usuario;
 
-public interface ControladorUsuarios {
+import org.springframework.security.core.userdetails.UserDetailsService;
+
+public interface ControladorUsuarios extends UserDetailsService{
     public Usuario registrarUsuario(Usuario u) ;
     public Usuario getUsuario(String id);
 	public List<Usuario> getUsuarios();

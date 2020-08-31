@@ -35,9 +35,12 @@ public class UsuariosController {
 
 
     @PostMapping("/autenticacion")
-    public ResponseEntity<?> newAuthenticationToken(@RequestBody AuthenticationRequest authenticationRequest) throws Exception{
+    public ResponseEntity<?> newAuthenticationToken(@RequestBody AuthenticationRequest authenticationRequest) 
+            throws Exception{
+
         try{
-            authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(authenticationRequest.getNombre(),authenticationRequest.getPassword()));
+            authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(
+                authenticationRequest.getNombre(),authenticationRequest.getPassword()));
         } catch (BadCredentialsException e){
             throw new Exception("Nombre o contraseña incorrectos", e);
         }
@@ -45,6 +48,7 @@ public class UsuariosController {
             .loadUserByUsername(authenticationRequest.getNombre());
         String jwt = jwtUtil.generateToken(userDetails);
         return ResponseEntity.ok(new AuthenticationResponse(jwt));
+        
     }
 
     @PostMapping("/usuarios")

@@ -15,9 +15,9 @@ import com.example.virtualworkrooms.persistencia.MensajesRepositorio;
 import com.example.virtualworkrooms.persistencia.SalasRepositorio;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
 
-@Component("controladorSalas")
+@Service("controladorSalas")
 public class ControladorSalasImpl implements ControladorSalas {
 
     @Autowired

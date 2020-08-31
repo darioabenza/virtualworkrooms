@@ -7,21 +7,22 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import com.example.virtualworkrooms.controlador.ControladorUsuarios;
 import com.example.virtualworkrooms.rest.JwtUtil;
-import com.example.virtualworkrooms.rest.VwrUserDetailsService;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.security.web.authentication.WebAuthenticationDetailsSource;
+import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
 
+@Component
 public class JwtRequestFilter extends OncePerRequestFilter {
 
     @Autowired
-    private VwrUserDetailsService userDetailsService;
+    private ControladorUsuarios controladorUsuarios;
 
     @Autowired
     private JwtUtil jwtUtil;
@@ -37,8 +38,10 @@ public class JwtRequestFilter extends OncePerRequestFilter {
             jwt = authorizationHeader.substring(7);
             nombre = jwtUtil.extractUsername(jwt);
         }
+
+        //si el SecurityContextHolder no tiene ya un usuario autenticado
         if(nombre != null && SecurityContextHolder.getContext().getAuthentication() == null){
-            UserDetails usuario = this.userDetailsService.loadUserByUsername(nombre);
+            UserDetails usuario = this.controladorUsuarios.loadUserByUsername(nombre);
             if(jwtUtil.validateToken(jwt, usuario)){
                 UsernamePasswordAuthenticationToken usernamePasswordAuthenticationToken = new UsernamePasswordAuthenticationToken(
                     usuario, null, usuario.getAuthorities());
