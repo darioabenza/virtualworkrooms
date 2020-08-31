@@ -1,7 +1,7 @@
-package com.example.virtualworkrooms.rest;
+package com.example.virtualworkrooms.rest.seguridad;
 
 import com.example.virtualworkrooms.controlador.ControladorUsuarios;
-import com.example.virtualworkrooms.rest.filters.JwtRequestFilter;
+import com.example.virtualworkrooms.rest.seguridad.filters.JwtRequestFilter;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;

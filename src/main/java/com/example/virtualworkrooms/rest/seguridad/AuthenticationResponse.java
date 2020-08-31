@@ -1,4 +1,4 @@
-package com.example.virtualworkrooms.rest;
+package com.example.virtualworkrooms.rest.seguridad;
 
 public class AuthenticationResponse {
 

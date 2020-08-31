@@ -27,7 +27,10 @@ public class Usuario implements UserDetails {
         this.fechaRegistro = fechaRegistro;
     }
 
-    public String getId() {
+    public Usuario() {
+	}
+
+	public String getId() {
         return this.id;
     }
 
