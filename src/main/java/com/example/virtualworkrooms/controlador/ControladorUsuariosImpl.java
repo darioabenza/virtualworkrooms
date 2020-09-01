@@ -26,7 +26,6 @@ public class ControladorUsuariosImpl implements ControladorUsuarios {
             throw new IllegalArgumentException("El email con el que se intenta registrar ya está en uso.");
         if (usuariosRepositorio.findByNombre(u.getNombre()) != null)
             throw new IllegalArgumentException("El nombre de usuario con el que se intenta registrar ya está en uso.");
-
         u.setPassword(passwordEncoder.encode(u.getPassword()));
         u.setFechaRegistro(LocalDateTime.now());
         Usuario usuario = usuariosRepositorio.insert(u);

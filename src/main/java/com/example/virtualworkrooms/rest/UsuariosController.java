@@ -46,7 +46,7 @@ public class UsuariosController {
         Usuario usuario = controladorUsuarios
             .loadUserByUsername(authenticationRequest.getNombre());
         String jwt = jwtUtil.generateToken(usuario);
-        return ResponseEntity.ok(new AuthenticationResponse(jwt));
+        return ResponseEntity.ok(new AuthenticationResponse(jwt, usuario));
         
     }
 
