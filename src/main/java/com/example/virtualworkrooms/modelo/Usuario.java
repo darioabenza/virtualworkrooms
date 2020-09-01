@@ -5,6 +5,8 @@ import java.util.Arrays;
 import java.util.Collection;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonProperty.Access;
 
 import org.springframework.data.annotation.Id;
 import org.springframework.security.core.GrantedAuthority;
@@ -17,6 +19,7 @@ public class Usuario implements UserDetails {
     private String id;
     private String nombre;
     private String email;
+    @JsonProperty(access = Access.WRITE_ONLY)
     private String password;
     private int horasTrabajadas;
     private LocalDateTime fechaRegistro;
@@ -56,7 +59,6 @@ public class Usuario implements UserDetails {
         this.email = email;
     }
 
-    @JsonIgnore
     public String getPassword() {
         return this.password;
     }
