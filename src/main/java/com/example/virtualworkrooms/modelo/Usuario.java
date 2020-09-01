@@ -56,6 +56,7 @@ public class Usuario implements UserDetails {
         this.email = email;
     }
 
+    @JsonIgnore
     public String getPassword() {
         return this.password;
     }

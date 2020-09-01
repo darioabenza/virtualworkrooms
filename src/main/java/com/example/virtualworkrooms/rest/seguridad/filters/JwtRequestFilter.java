@@ -47,8 +47,7 @@ public class JwtRequestFilter extends OncePerRequestFilter {
             UsernamePasswordAuthenticationToken usernamePasswordAuthenticationToken = new UsernamePasswordAuthenticationToken(
                 idUsuario, null, usuarioMock.getAuthorities());
             //Almacena el mock autenticado en el contexto. Si fuese necesario se podría recuperar el usuario real para su uso en la aplicación
-            SecurityContextHolder.getContext().setAuthentication(usernamePasswordAuthenticationToken);
-            
+            SecurityContextHolder.getContext().setAuthentication(usernamePasswordAuthenticationToken);            
         }
         //Pasa el relevo al siguiente filtro si lo hay
         chain.doFilter(request, response);
