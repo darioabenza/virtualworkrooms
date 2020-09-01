@@ -30,8 +30,6 @@ public class JwtUtil {
             while(scanner.hasNext()){
                 secretKey +=scanner.next();
             }
-
-            System.out.println("secret: "+secretKey);
             scanner.close();
         } catch (FileNotFoundException e) {
             throw new VirtualWorkRoomsException("Error al abrir el archivo secret", e);
