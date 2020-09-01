@@ -5,20 +5,18 @@ function registrar(){
     $.ajax({
         type: "POST",
         url: "/usuarios",
-        data: {
+        data: JSON.stringify({
             nombre: nombre,
             email: email,
             password: password,
+        }),
+        success: function (data, status, xhr){
+            $("#modalOK").modal("show")
         },
-        success: function (response){
-            if (response.status == "400"){
-                $("p.text-danger").html(response.body)
-            }
-            else if (response.status == "200"){
-
-            }
+        error: function(xhr, status, error){
+            $("#boton-registrar").before("<p class=\"text-danger\">"+xhr.responseText+"</p>")
         },
-        dataType: "json",
+        contentType: "application/json"
     })
 }
 
@@ -72,5 +70,8 @@ $(document).ready(function() {
                 registrar()
             }
         }
+    })
+    $("#loginRedirect").click(function(){
+        window.location.href ="/login.html"
     })
 })
