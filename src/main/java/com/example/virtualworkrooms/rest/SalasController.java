@@ -89,11 +89,4 @@ public class SalasController {
     public List<Mensaje> allMensajes(@PathVariable String id){
         return controladorSalas.getMensajes(id);
     }
-    //TODO
-/*
-    @PostMapping("/categorias/{nombreCat}/salas/{id}/participantes")
-    public ResponseEntity<?> newParticipante(@PathVariable String id, @RequestBody Usuario participante){
-        
-    }
-    */
 }

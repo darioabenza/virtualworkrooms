@@ -33,7 +33,7 @@ public class UsuariosController {
     private JwtUtil jwtUtil;
 
 
-    @PostMapping("/autenticacion")
+    @PostMapping("/login")
     public ResponseEntity<?> newAuthenticationToken(@RequestBody AuthenticationRequest authenticationRequest) 
             throws Exception{
 
