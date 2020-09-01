@@ -40,8 +40,8 @@ public class UsuariosController {
         try{
             authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(
                 authenticationRequest.getNombre(),authenticationRequest.getPassword()));
-        } catch (BadCredentialsException e){
-            throw new Exception("Nombre o contraseña incorrectos", e);
+        } catch (Exception e){
+            throw new IllegalArgumentException("Nombre o contraseña incorrectos", e);
         }
         Usuario usuario = controladorUsuarios
             .loadUserByUsername(authenticationRequest.getNombre());

@@ -1,36 +1,42 @@
 function log() {
-    var email = $("#email").val();
+    var nombre = $("#nombre").val();
     var password = $("#password").val();
-    $.ajax({type: "POST",
-    url: "/login",
-    data: {
-        username: email,
-        password: password,
-    },
-    success: function (response){
-        if (response.status == "400"){
-            $("p.text-danger").html(response.body)
-        }
-        else if (response.status == "200"){
-
-        }
-    },
-    dataType: "json",
-})
-console.log("enviando")
+    $.ajax({
+        type: "POST",
+        url: "/login",
+        data: JSON.stringify({
+            nombre: nombre,
+            password: password,
+        }),
+        success: 
+            function(data, status, xhr){
+                if(status=="success"){
+                    window.localStorage.set("jwt", data.jwt)
+                    window.localStorage.set("usuario", data.usuario)
+                }
+                
+        },
+        error:
+            function(xhr, status, error){
+                console.log(xhr.responseText)
+                $("p.text-danger").empty()
+                $("p.text-danger").append(xhr.responseText)
+            },
+        contentType: "application/json",
+    })
+    console.log("enviando")
 }
 
-var emailreg = /^[a-zA-Z0-9.!#$%&’*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/
 var passwreg = /^.*[0-9]+.*$/
 
 function validar(){
-    if($("#email").val()=="" || !emailreg.test($("#email").val())){
-        $("#email").tooltip("show")
-        $("#email").css("border-color","red")
-        console.log("email no válido")
+    if($("#nombre").val() == ""){
+        $("#nombre").tooltip("show")
+        $("#nombre").css("border-color","red")
+        $("#nombre").focus()
         return false
     }
-    $("#email").css('border-color','')
+    $("#nombre").css("border-color","")
     if($("#password").val().length < 6 || !passwreg.test($("#password").val())){
         $("#password").tooltip("show")
         $("#password").css("border-color","red")
@@ -38,7 +44,6 @@ function validar(){
         return false
     }
     $("#password").css('border-color','')
-    console.log("campos válidos")
     return true
 }
 
