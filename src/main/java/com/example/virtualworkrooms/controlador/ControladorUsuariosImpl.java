@@ -9,6 +9,7 @@ import com.example.virtualworkrooms.persistencia.UsuariosRepositorio;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 @Service("controladorUsuarios")
@@ -16,6 +17,8 @@ public class ControladorUsuariosImpl implements ControladorUsuarios {
 
     @Autowired
     private UsuariosRepositorio usuariosRepositorio;
+    @Autowired
+    private PasswordEncoder passwordEncoder;
 
     @Override
     public Usuario registrarUsuario(Usuario u) {
@@ -24,6 +27,7 @@ public class ControladorUsuariosImpl implements ControladorUsuarios {
         if (usuariosRepositorio.findByNombre(u.getNombre()) != null)
             throw new IllegalArgumentException("El nombre de usuario con el que se intenta registrar ya está en uso.");
 
+        u.setPassword(passwordEncoder.encode(u.getPassword()));
         u.setFechaRegistro(LocalDateTime.now());
         Usuario usuario = usuariosRepositorio.insert(u);
 
