@@ -16,6 +16,9 @@ function enviarMensaje(){
             texto: texto
         }),
         contentType: "application/json",
+        beforeSend: function(request){
+            request.setRequestHeader("Authorization", "Bearer "+window.localStorage.getItem("jwt"))
+        },
         success: function(data, status, xhr){
             $("textarea").val("")
             getSala()
@@ -25,29 +28,40 @@ function enviarMensaje(){
 
 function getSala(){
     let url = "/categorias/"+categoria+"/salas/"+id
-    $.getJSON(url, function(data){
-        console.log(data)
-        for(let msj of data.mensajes){
-            $("#mensajesLista").append(
-                "<li>\
-                    <div class=\"header\">\
-                        <div class=\"avatar-marco\">\
-                            <img class=\"avatar-img\" src=\"logo.png\"/>\
+    $.ajax({
+        type: "GET",
+        url: url,
+        beforeSend: function(request){
+            request.setRequestHeader("Authorization", "Bearer "+window.localStorage.getItem("jwt"))
+        },
+        error: function(xhr, status, error){
+            if(xhr.status == 403)
+                window.location.href = "/login.html"
+        },
+        success: function(data, status, xhr){
+            console.log(data)
+            for(let msj of data.mensajes){
+                $("#mensajesLista").append(
+                    "<li>\
+                        <div class=\"header\">\
+                            <div class=\"avatar-marco\">\
+                                <img class=\"avatar-img\" src=\"logo.png\"/>\
+                            </div>\
+                            <span><strong>"+"reemplazar"+"</strong></span>\
                         </div>\
-                        <span><strong>"+"reemplazar"+"</strong></span>\
-                    </div>\
-                    <p>"+msj.texto+"</p>\
-                </li>")
-        }
-        for(let p of data.participantes){
-            $("#participantesLista").append(
-                "<li>\
-                    <div class=\"avatar-marco\">\
-                            <img class=\"avatar-img\" src=\"logo.png\"/>\
-                    </div>\
-                    <span>"+p.nombre+"</span>\
-                </li>"
-            )
+                        <p>"+msj.texto+"</p>\
+                    </li>")
+            }
+            for(let p of data.participantes){
+                $("#participantesLista").append(
+                    "<li>\
+                        <div class=\"avatar-marco\">\
+                                <img class=\"avatar-img\" src=\"logo.png\"/>\
+                        </div>\
+                        <span>"+p.nombre+"</span>\
+                    </li>"
+                )
+            }
         }
     })
 }

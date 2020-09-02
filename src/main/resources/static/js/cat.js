@@ -14,10 +14,10 @@ function getSalas(){
                 continue
             }
             lista.append("<tr><td>\
-                    <a href=\"/sala.html?categoria="+categoria+"&id="+sala.id+"&nombre="+sala.nombre+"\">\
-                    <div class=\"card\">\
-                    <p>"+sala.nombre+"</p>\
-                    </div></td></tr>")
+                <a href=\"/sala.html?categoria="+categoria+"&id="+sala.id+"&nombre="+sala.nombre+"\">\
+                <div class=\"card\">\
+                <p>"+sala.nombre+"</p>\
+                </div></td></tr>")
         }
     })
 }
@@ -32,6 +32,9 @@ function crearSala(){
         data: JSON.stringify({
             nombre: nombre
         }),
+        beforeSend: function(request){
+            request.setRequestHeader("Authorization", "Bearer "+window.localStorage.getItem("jwt"))
+        },
         success: function(data, status, xhr){
             if(status=="success"){
                 let location = xhr.getResponseHeader("Location")
