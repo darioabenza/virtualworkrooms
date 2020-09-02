@@ -11,8 +11,9 @@ function log() {
         success: 
             function(data, status, xhr){
                 if(status=="success"){
-                    window.localStorage.set("jwt", data.jwt)
-                    window.localStorage.set("usuario", data.usuario)
+                    window.localStorage.setItem("jwt", data.jwt)
+                    window.localStorage.setItem("usuario", JSON.stringify(data.usuario))
+                    window.location.href="/index.html"
                 }
                 
         },
