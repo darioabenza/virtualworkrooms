@@ -125,13 +125,14 @@ public class ControladorSalasImpl implements ControladorSalas {
             throw new NotFoundException("Sala no encontrada");
         msj.setFecha(LocalDateTime.now());
         msj.setSalaId(idSala);
-        s.addMensaje(msj);
         Optional <Sala> salaEnRepo = salasRepositorio.findById(idSala);
         if(salaEnRepo.isPresent()){
             salaEnRepo.get().addMensaje(msj);
             salasRepositorio.save(salaEnRepo.get());
         }
-        return mensajesRepositorio.save(msj);
+        Mensaje nuevoMsj = mensajesRepositorio.save(msj);
+        s.addMensaje(nuevoMsj);
+        return nuevoMsj;
     }
 
     @Override
