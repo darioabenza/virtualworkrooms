@@ -13,6 +13,7 @@ function log() {
                 if(status=="success"){
                     window.localStorage.setItem("jwt", data.jwt)
                     window.localStorage.setItem("usuario", JSON.stringify(data.usuario))
+                    window.localStorage.setItem("loginTimestamp", JSON.stringify(new Date()))
                     window.location.href="/index.html"
                 }
                 
