@@ -4,7 +4,7 @@ var avatar = "media/avatar/piratecat.png"
 $(document).ready(function(){
     var usuario = JSON.parse(localStorage.getItem("usuario"))
     var autenticado = usuario !=null
-    
+
     if(autenticado){
         var loginTimestamp = new Date(JSON.parse(window.localStorage.getItem("loginTimestamp")))
         if( (Date.now() - loginTimestamp) < 1000*60*60*10)
@@ -18,13 +18,11 @@ $(document).ready(function(){
         } else{
             window.localStorage.setItem("usuario",null)
             window.localStorage.setItem("jwt", null)
-            window.localStorage.setItem("loginTimestamp", null)
         }
     }
     $("#logout").click(function(){
         window.localStorage.setItem("usuario",null)
         window.localStorage.setItem("jwt", null)
-        window.localStorage.setItem("loginTimestamp", null)
         window.location.href="index.html"
     })
 })
