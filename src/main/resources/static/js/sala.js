@@ -6,6 +6,12 @@ var nombreSala = parametros[2].split("=")[1]
 var timer = new Date()
 var timestamp1 = timer.getTime()
 
+function manejarProhibido(){
+    window.localStorage.setItem("usuario", null)
+    window.localStorage.setItem("jwt", null)
+    window.location.href = "/login.html"
+}
+
 function enviarMensaje(){
     let texto = $("textarea").val()
     let url = "/categorias/"+categoria+"/salas/"+id+"/mensajes"
@@ -18,6 +24,10 @@ function enviarMensaje(){
         contentType: "application/json",
         beforeSend: function(request){
             request.setRequestHeader("Authorization", "Bearer "+window.localStorage.getItem("jwt"))
+        },
+        error: function(xhr, status, error){
+            if(xhr.status == 403)
+                manejarProhibido()
         },
         success: function(data, status, xhr){
             $("textarea").val("")
@@ -36,7 +46,7 @@ function getSala(){
         },
         error: function(xhr, status, error){
             if(xhr.status == 403)
-                window.location.href = "/login.html"
+                manejarProhibido()
         },
         success: function(data, status, xhr){
             console.log(data)
