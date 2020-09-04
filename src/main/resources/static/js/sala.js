@@ -1,13 +1,16 @@
 var str = window.location.search.substr(1)
 var parametros = str.split("&")
-var categoria = parametros[0].split("=")[1]
-var id = parametros[1].split("=")[1]
-var nombreSala = parametros[2].split("=")[1]
-var timer = new Date()
-var timestamp1 = timer.getTime()
+var salaObj = {
+    id: parametros[1].split("=")[1],
+    nombre: parametros[2].split("=")[1],
+    categoriaNombre: parametros[0].split("=")[1],
+    mensajes: [],
+    participantes: []
+}
+var timestamp1 = new Date().getTime()
 var usuario = window.localStorage.getItem("usuario")
 var jwt = window.localStorage.getItem("jwt")
-var salaObj
+
 
 function manejarProhibido(){
     window.localStorage.setItem("usuario", null)
@@ -17,7 +20,7 @@ function manejarProhibido(){
 
 function enviarMensaje(){
     let texto = $("textarea").val()
-    let url = "/categorias/"+categoria+"/salas/"+id+"/mensajes"
+    let url = "/categorias/"+salaObj.categoriaNombre+"/salas/"+salaObj.id+"/mensajes"
     $.ajax({
         type: "POST",
         url: url,
@@ -34,13 +37,14 @@ function enviarMensaje(){
         },
         success: function(data, status, xhr){
             $("textarea").val("")
-            getSala()
+            getSala().then(actualizarVista)
+
         }
     })
 }
 
 async function entrarSala(){
-    let url = "/categorias/"+categoria+"/salas/"+id+"/participantes"
+    let url = "/categorias/"+salaObj.categoriaNombre+"/salas/"+salaObj.id+"/participantes"
     return new Promise(function(resolve, reject){
         $.ajax({
             type: "POST",
@@ -63,7 +67,7 @@ async function entrarSala(){
 }
 
 async function getSala(){
-    let url = "/categorias/"+categoria+"/salas/"+id
+    let url = "/categorias/"+salaObj.categoriaNombre+"/salas/"+salaObj.id
     return new Promise(function(resolve, reject){
         $.ajax({
             type: "GET",
@@ -77,8 +81,7 @@ async function getSala(){
                 reject(error)
             },
             success: function(data, status, xhr){
-                salaObj = data
-                resolve(salaObj)
+                resolve(data)
             }
         })
         
@@ -86,9 +89,10 @@ async function getSala(){
     
 }
 
-function actualizarVista(){
-    if(salaObj.mensajes != null){
-        for(let msj of salaObj.mensajes){
+function actualizarVista(data){
+    if(data.mensajes.length != salaObj.mensajes.length){
+        $("#mensajesLista").empty()
+        for(let msj of data.mensajes){
         $("#mensajesLista").append(
             "<li>\
                 <div class=\"header\">\
@@ -101,8 +105,9 @@ function actualizarVista(){
             </li>")
         }
     }
-    if(salaObj.participantes != null){
-        for(let p of salaObj.participantes){
+    if(data.participantes.length != salaObj.participantes.length){
+        $("#participantesLista").empty()
+        for(let p of data.participantes){
         $("#participantesLista").append(
             "<li>\
                 <div class=\"avatar-marco\">\
@@ -112,22 +117,35 @@ function actualizarVista(){
             </li>")
         }
     }
-    
+    salaObj = data
 }
 
 function salir(){
-    timer = new Date()
-    let timestamp2 = timer.getTime()
+    let timestamp2 = new Date().getTime()
     let ttotal = timestamp2 - timestamp1
     let tsegundos = ttotal/1000
     let segundos = Math.floor((tsegundos%60))
     let tminutos = segundos/60
     let minutos = Math.floor((tminutos%60))
     let horas = Math.floor((tminutos/60))
-    //TODO
     //enviar update user
+    usuario.tiempoTrabajado +=ttotal
+    let url = "/usuarios/"+usuario.id
+    $.ajax({
+        type: "PUT",
+        url: url,
+        data: usuario,
+        contentType: "application/json",
+        beforeSend: function(request){
+            request.setRequestHeader("Authorization", "Bearer "+jwt)
+        },
+        error: function(xhr, status, error){
+            if(xhr.status == 403)
+                manejarProhibido()
+        }
+    })
     //enviar delete participante
-    let url = "/categorias/"+categoria+"/salas/"+id+"/participantes/"+usuario.id
+    url = "/categorias/"+salaObj.categoriaNombre+"/salas/"+salaObj.id+"/participantes/"+usuario.id
     $.ajax({
         type: "DELETE",
         url: url,
@@ -147,8 +165,8 @@ function salir(){
 }
 
 $(document).ready(function(){
-    $("h1").append(categoria)
-    $("h2").append(nombreSala)
+    $("h1").append(salaObj.categoriaNombre)
+    $("h2").append(salaObj.nombre)
     $("#enviarMensaje").click(enviarMensaje)
     $("textarea").keypress(function(){
         if(event.keyCode === 13)
@@ -157,9 +175,10 @@ $(document).ready(function(){
     $("#salir-boton").click(salir)
     window.onbeforeunload = salir
     entrarSala().then(() => {
-        getSala().then(() => {
-            actualizarVista()
-        })
+        getSala().then(actualizarVista)
     })
     
+    setInterval(()=>{
+        getSala().then(actualizarVista)
+    }, 5000)
 })

@@ -11,9 +11,10 @@ $(document).ready(function(){
         {
             $("#login").remove()
             $("#registro").remove()
+            let horasTrabajadas = Math.floor(usuario.tiempoTrabajado/60/60/1000)
             $("#usuario-nav")
                 .append("<img class=\"border rounded-circle img-profile\"src=\""+avatar+"\"></img>\
-                <strong>"+usuario.nombre+"</strong> "+usuario.horasTrabajadas+"h\
+                <strong>"+usuario.nombre+"</strong> "+horasTrabajadas+"h\
                 <button id=\"logout\" class=\"btn action-button\" role=\"button\"\">Cerrar sesión</button>")
         } else{
             window.localStorage.setItem("usuario",null)
