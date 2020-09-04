@@ -21,7 +21,7 @@ public class Usuario implements UserDetails {
     private String email;
     @JsonProperty(access = Access.WRITE_ONLY)
     private String password;
-    private int tiempoTrabajado;
+    private int tiempoTrabajado; //Milisegundos
     private LocalDateTime fechaRegistro;
 
     public Usuario(String nombre, String email, String password, int tiempoTrabajado, LocalDateTime fechaRegistro) {
