@@ -5,6 +5,7 @@ var id = parametros[1].split("=")[1]
 var nombreSala = parametros[2].split("=")[1]
 var timer = new Date()
 var timestamp1 = timer.getTime()
+var salaObj
 
 function manejarProhibido(){
     window.localStorage.setItem("usuario", null)
@@ -36,44 +37,63 @@ function enviarMensaje(){
     })
 }
 
-function getSala(){
+async function getSala(){
     let url = "/categorias/"+categoria+"/salas/"+id
-    $.ajax({
-        type: "GET",
-        url: url,
-        beforeSend: function(request){
-            request.setRequestHeader("Authorization", "Bearer "+window.localStorage.getItem("jwt"))
-        },
-        error: function(xhr, status, error){
-            if(xhr.status == 403)
-                manejarProhibido()
-        },
-        success: function(data, status, xhr){
-            console.log(data)
-            for(let msj of data.mensajes){
-                $("#mensajesLista").append(
-                    "<li>\
-                        <div class=\"header\">\
-                            <div class=\"avatar-marco\">\
-                                <img class=\"avatar-img\" src=\"logo.png\"/>\
-                            </div>\
-                            <span><strong>"+"reemplazar"+"</strong></span>\
-                        </div>\
-                        <p>"+msj.texto+"</p>\
-                    </li>")
+    return new Promise(function(resolve, reject){
+        $.ajax({
+            type: "GET",
+            url: url,
+            beforeSend: function(request){
+                request.setRequestHeader("Authorization", "Bearer "+window.localStorage.getItem("jwt"))
+            },
+            error: function(xhr, status, error){
+                if(xhr.status == 403)
+                    manejarProhibido()
+                reject(error)
+            },
+            success: function(data, status, xhr){
+                salaObj = data
+                resolve(salaObj)
             }
-            for(let p of data.participantes){
-                $("#participantesLista").append(
-                    "<li>\
-                        <div class=\"avatar-marco\">\
-                                <img class=\"avatar-img\" src=\"logo.png\"/>\
-                        </div>\
-                        <span>"+p.nombre+"</span>\
-                    </li>"
-                )
-            }
-        }
+        })
+        
     })
+    
+}
+
+function updateSala(){
+    let url = "/categorias/"+categoria+"/salas/"+id
+    console.log(salaObj)
+
+}
+
+function actualizarVista(){
+    if(salaObj.mensajes != null){
+        for(let msj of salaObj.mensajes){
+        $("#mensajesLista").append(
+            "<li>\
+                <div class=\"header\">\
+                    <div class=\"avatar-marco\">\
+                        <img class=\"avatar-img\" src=\"logo.png\"/>\
+                    </div>\
+                    <span><strong>"+"reemplazar"+"</strong></span>\
+                </div>\
+                <p>"+msj.texto+"</p>\
+            </li>")
+        }
+    }
+    if(salaObj.participantes != null){
+        for(let p of salaObj.participantes){
+        $("#participantesLista").append(
+            "<li>\
+                <div class=\"avatar-marco\">\
+                        <img class=\"avatar-img\" src=\"logo.png\"/>\
+                </div>\
+                <span>"+p.nombre+"</span>\
+            </li>")
+        }
+    }
+    
 }
 
 function salir(){
@@ -94,7 +114,6 @@ function salir(){
 $(document).ready(function(){
     $("h1").append(categoria)
     $("h2").append(nombreSala)
-    getSala()
     $("#enviarMensaje").click(enviarMensaje)
     $("textarea").keypress(function(){
         if(event.keyCode === 13)
@@ -105,4 +124,11 @@ $(document).ready(function(){
         window.location.href="index.html"
     })
     window.onbeforeunload = salir
+    //mandar post participante.then=>
+    getSala().then(function(){
+        //mandar post participante
+        updateSala()
+        actualizarVista()
+    })
+    
 })
