@@ -69,7 +69,7 @@ public class UsuariosController {
     }
 
     @PutMapping("/usuarios/{id}")
-    public Usuario updateUsuario(@PathVariable String id, Usuario u){
+    public Usuario updateUsuario(@PathVariable String id, @RequestBody Usuario u){
         return controladorUsuarios.updateUsuario(id, u);
     }
 
