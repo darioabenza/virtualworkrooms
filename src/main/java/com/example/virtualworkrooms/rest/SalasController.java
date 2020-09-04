@@ -10,6 +10,7 @@ import com.example.virtualworkrooms.controlador.VirtualWorkRoomsException;
 import com.example.virtualworkrooms.modelo.Categoria;
 import com.example.virtualworkrooms.modelo.Mensaje;
 import com.example.virtualworkrooms.modelo.Sala;
+import com.example.virtualworkrooms.modelo.Usuario;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -88,5 +89,20 @@ public class SalasController {
     @GetMapping("/categorias/{nombreCat}/salas/{id}/mensajes")
     public List<Mensaje> allMensajes(@PathVariable String id){
         return controladorSalas.getMensajes(id);
+    }
+
+    @PostMapping("/categorias/{nombreCat}/salas/{id}/participantes")
+    public ResponseEntity<?> newParticipante(@PathVariable String id, @RequestBody Usuario participante){
+        controladorSalas.newParticipante(id, participante);
+        URI location = ServletUriComponentsBuilder
+                        .fromCurrentRequest().path("/{idParticipante}")
+                        .buildAndExpand(participante.getId()).toUri();
+        return ResponseEntity.created(location).build();
+    }
+
+    @DeleteMapping("/categorias/{nombreCat}/salas/{id}/participantes/{idParticipante}")
+    public ResponseEntity<?> deleteParticipante(@PathVariable String id, @PathVariable String idParticipante){
+        controladorSalas.deleteParticipante(id, idParticipante);
+        return ResponseEntity.ok().build();
     }
 }

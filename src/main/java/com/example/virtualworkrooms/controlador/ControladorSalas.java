@@ -5,6 +5,7 @@ import java.util.List;
 import com.example.virtualworkrooms.modelo.Categoria;
 import com.example.virtualworkrooms.modelo.Mensaje;
 import com.example.virtualworkrooms.modelo.Sala;
+import com.example.virtualworkrooms.modelo.Usuario;
 
 public interface ControladorSalas {
 
@@ -22,8 +23,12 @@ public interface ControladorSalas {
 
 	Sala getSala(String nombreCat, String id) throws VirtualWorkRoomsException;
 
-	Mensaje newMensaje(String idSala, Mensaje idMsj);
+	Mensaje newMensaje(String idSala, Mensaje mensaje);
 
 	List<Mensaje> getMensajes(String idSala);
+
+	Usuario newParticipante(String idSala, Usuario participante);
+
+	void deleteParticipante(String idSala, String idUsuario);
     
 }
