@@ -48,11 +48,12 @@ public class ControladorUsuariosImpl implements ControladorUsuarios {
 
     @Override
     public Usuario updateUsuario(String id, Usuario u) {
+        System.err.println(u);
         Optional<Usuario> usuario = usuariosRepositorio.findById(id);
         if (usuario.isPresent()) {
             usuario.get().setEmail(u.getEmail());
             usuario.get().setFechaRegistro(u.getFechaRegistro());
-            usuario.get().setHorasTrabajadas(u.getHorasTrabajadas());
+            usuario.get().setTiempoTrabajado(u.getTiempoTrabajado());
             usuario.get().setNombre(u.getNombre());
             usuario.get().setPassword(u.getPassword());
             return usuariosRepositorio.save(usuario.get());

@@ -21,14 +21,14 @@ public class Usuario implements UserDetails {
     private String email;
     @JsonProperty(access = Access.WRITE_ONLY)
     private String password;
-    private int horasTrabajadas;
+    private int tiempoTrabajado;
     private LocalDateTime fechaRegistro;
 
-    public Usuario(String nombre, String email, String password, int horasTrabajadas, LocalDateTime fechaRegistro) {
+    public Usuario(String nombre, String email, String password, int tiempoTrabajado, LocalDateTime fechaRegistro) {
         this.nombre = nombre;
         this.email = email;
         this.password = password;
-        this.horasTrabajadas = horasTrabajadas;
+        this.tiempoTrabajado = tiempoTrabajado;
         this.fechaRegistro = fechaRegistro;
     }
 
@@ -67,12 +67,12 @@ public class Usuario implements UserDetails {
         this.password = password;
     }
 
-    public int getHorasTrabajadas() {
-        return this.horasTrabajadas;
+    public int getTiempoTrabajado() {
+        return this.tiempoTrabajado;
     }
 
-    public void setHorasTrabajadas(int horasTrabajadas) {
-        this.horasTrabajadas = horasTrabajadas;
+    public void setTiempoTrabajado(int tiempoTrabajado) {
+        this.tiempoTrabajado = tiempoTrabajado;
     }
 
     public LocalDateTime getFechaRegistro() {
@@ -86,7 +86,7 @@ public class Usuario implements UserDetails {
     @Override
     public String toString() {
         return "{" + " id='" + id + "'" + ", nombre='" + nombre + "'" + ", email='" + email + "'" + ", password='"
-                + password + "'" + ", horasTrabajadas='" + horasTrabajadas + "'" + ", fechaRegistro='" + fechaRegistro
+                + password + "'" + ", tiempoTrabajado='" + tiempoTrabajado + "'" + ", fechaRegistro='" + fechaRegistro
                 + "'" + "}";
     }
 
