@@ -5,6 +5,8 @@ var id = parametros[1].split("=")[1]
 var nombreSala = parametros[2].split("=")[1]
 var timer = new Date()
 var timestamp1 = timer.getTime()
+var usuario = window.localStorage.getItem("usuario")
+var jwt = window.localStorage.getItem("jwt")
 var salaObj
 
 function manejarProhibido(){
@@ -24,7 +26,7 @@ function enviarMensaje(){
         }),
         contentType: "application/json",
         beforeSend: function(request){
-            request.setRequestHeader("Authorization", "Bearer "+window.localStorage.getItem("jwt"))
+            request.setRequestHeader("Authorization", "Bearer "+jwt)
         },
         error: function(xhr, status, error){
             if(xhr.status == 403)
@@ -37,6 +39,29 @@ function enviarMensaje(){
     })
 }
 
+async function entrarSala(){
+    let url = "/categorias/"+categoria+"/salas/"+id+"/participantes"
+    return new Promise(function(resolve, reject){
+        $.ajax({
+            type: "POST",
+            url: url,
+            data: JSON.stringify(usuario),
+            contentType: "application/json",
+            beforeSend: function(request){
+                request.setRequestHeader("Authorization", "Bearer "+jwt)
+            },
+            error: function(xhr, status, error){
+                if(xhr.status == 403)
+                    manejarProhibido()
+                reject(error)
+            },
+            success: function(){
+                resolve(salaObj)
+            }
+        })
+    })
+}
+
 async function getSala(){
     let url = "/categorias/"+categoria+"/salas/"+id
     return new Promise(function(resolve, reject){
@@ -44,7 +69,7 @@ async function getSala(){
             type: "GET",
             url: url,
             beforeSend: function(request){
-                request.setRequestHeader("Authorization", "Bearer "+window.localStorage.getItem("jwt"))
+                request.setRequestHeader("Authorization", "Bearer "+jwt)
             },
             error: function(xhr, status, error){
                 if(xhr.status == 403)
@@ -59,12 +84,6 @@ async function getSala(){
         
     })
     
-}
-
-function updateSala(){
-    let url = "/categorias/"+categoria+"/salas/"+id
-    console.log(salaObj)
-
 }
 
 function actualizarVista(){
@@ -100,15 +119,31 @@ function salir(){
     timer = new Date()
     let timestamp2 = timer.getTime()
     let ttotal = timestamp2 - timestamp1
-    //TODO
-    //enviar update user
-
     let tsegundos = ttotal/1000
     let segundos = Math.floor((tsegundos%60))
     let tminutos = segundos/60
     let minutos = Math.floor((tminutos%60))
     let horas = Math.floor((tminutos/60))
-    alert("Vas a salir de la sala. Has trabajado un tiempo total de: "+horas+" horas, "+minutos+" minutos, "+segundos+" segundos.")
+    //TODO
+    //enviar update user
+    //enviar delete participante
+    let url = "/categorias/"+categoria+"/salas/"+id+"/participantes/"+usuario.id
+    $.ajax({
+        type: "DELETE",
+        url: url,
+        beforeSend: function(request){
+            request.setRequestHeader("Authorization", "Bearer "+jwt)
+        },
+        error: function(xhr, status, error){
+            if(xhr.status == 403)
+                manejarProhibido()
+        },
+        success: function(){
+            alert("Has salido de la sala. Has trabajado un tiempo total de: "+horas+" horas, "+minutos+" minutos, "+segundos+" segundos.")
+            window.location.href="index.html"
+        }
+    })
+    
 }
 
 $(document).ready(function(){
@@ -119,16 +154,12 @@ $(document).ready(function(){
         if(event.keyCode === 13)
             enviarMensaje()
     })
-    $("#salir-boton").click(function(){
-        salir()
-        window.location.href="index.html"
-    })
+    $("#salir-boton").click(salir)
     window.onbeforeunload = salir
-    //mandar post participante.then=>
-    getSala().then(function(){
-        //mandar post participante
-        updateSala()
-        actualizarVista()
+    entrarSala().then(() => {
+        getSala().then(() => {
+            actualizarVista()
+        })
     })
     
 })
