@@ -28,6 +28,7 @@ public class ControladorUsuariosImpl implements ControladorUsuarios {
             throw new IllegalArgumentException("El nombre de usuario con el que se intenta registrar ya está en uso.");
         u.setPassword(passwordEncoder.encode(u.getPassword()));
         u.setFechaRegistro(LocalDateTime.now());
+        u.asignarAvatar();
         Usuario usuario = usuariosRepositorio.insert(u);
 
         return usuario;
@@ -54,6 +55,7 @@ public class ControladorUsuariosImpl implements ControladorUsuarios {
             usuario.get().setFechaRegistro(u.getFechaRegistro());
             usuario.get().setTiempoTrabajado(u.getTiempoTrabajado());
             usuario.get().setNombre(u.getNombre());
+            usuario.get().setAvatar(u.getAvatar());
             //la password no puede ser cambiada
             return usuariosRepositorio.save(usuario.get());
         } else

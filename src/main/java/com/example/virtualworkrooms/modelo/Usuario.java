@@ -1,8 +1,10 @@
 package com.example.virtualworkrooms.modelo;
 
+import java.io.File;
 import java.time.LocalDateTime;
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.Random;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -23,6 +25,7 @@ public class Usuario implements UserDetails {
     private String password;
     private int tiempoTrabajado; //Milisegundos
     private LocalDateTime fechaRegistro;
+    private String avatar;
 
     public Usuario(String nombre, String email, String password, int tiempoTrabajado, LocalDateTime fechaRegistro) {
         this.nombre = nombre;
@@ -34,6 +37,12 @@ public class Usuario implements UserDetails {
 
     public Usuario() {
 	}
+
+    public void asignarAvatar(){
+        File avatarDir = new File("./src/main/resources/static/media/avatar");
+        int numFiles = avatarDir.listFiles().length;
+        avatar = "/media/avatar/" + avatarDir.listFiles()[new Random().nextInt(numFiles)].getName();
+    }
 
 	public String getId() {
         return this.id;
@@ -82,6 +91,16 @@ public class Usuario implements UserDetails {
     public void setFechaRegistro(LocalDateTime fechaRegistro) {
         this.fechaRegistro = fechaRegistro;
     }
+
+
+    public String getAvatar() {
+        return this.avatar;
+    }
+
+    public void setAvatar(String avatar) {
+        this.avatar = avatar;
+    }
+
 
     @Override
     public String toString() {
