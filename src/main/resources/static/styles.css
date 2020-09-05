@@ -135,9 +135,13 @@ nav .btn:hover {
 
 #mensajes .panel-body{
     display: flex;
+    min-height: 100px;
     flex-direction: column-reverse;
 }
 
+#mensajes .panel-footer{
+    margin-bottom: 20px;
+}
 
 .avatar-marco{
     width: 30px;
