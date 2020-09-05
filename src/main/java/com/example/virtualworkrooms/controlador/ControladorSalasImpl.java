@@ -154,7 +154,7 @@ public class ControladorSalasImpl implements ControladorSalas {
 
     @Override
     public void deleteParticipante(String idSala, String idUsuario) {
-        salasCatalogo.remove(idUsuario);
+        salasCatalogo.get(idSala).deleteParticipante(idUsuario);
     }
 
     

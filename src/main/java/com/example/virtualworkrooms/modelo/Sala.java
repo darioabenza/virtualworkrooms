@@ -78,12 +78,15 @@ public class Sala {
     public void addParticipante(Usuario participante){
         if(participantes == null){
             participantes = new LinkedList<Usuario>();
+            participantes.add(participante);
+            return;
         }
-        participantes.add(participante);
+        if (participantes.stream().noneMatch(p -> p.getId().equals(participante.getId())))
+            participantes.add(participante);
     }
 
     public void deleteParticipante(String id){
-        participantes.removeIf(p->p.getId() == id);
+        participantes.removeIf(p->p.getId().equals(id));
     }
 
     public void addMensaje(Mensaje mensaje){

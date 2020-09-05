@@ -1,14 +1,19 @@
 var str = window.location.search.substr(1)
 var parametros = str.split("&")
+var urlEncoded = {
+    id : parametros[1].split("=")[1],
+    nombre : parametros[2].split("=")[1],
+    categoriaNombre : parametros[0].split("=")[1]
+}
 var salaObj = {
-    id: parametros[1].split("=")[1],
-    nombre: parametros[2].split("=")[1],
-    categoriaNombre: parametros[0].split("=")[1],
+    id: decodeURIComponent(urlEncoded.id),
+    nombre: decodeURIComponent(urlEncoded.nombre),
+    categoriaNombre: decodeURIComponent(urlEncoded.categoriaNombre),
     mensajes: [],
     participantes: []
 }
 var timestamp1 = new Date().getTime()
-var usuario = window.localStorage.getItem("usuario")
+var usuario = JSON.parse(window.localStorage.getItem("usuario"))
 var jwt = window.localStorage.getItem("jwt")
 
 
@@ -19,14 +24,15 @@ function manejarProhibido(){
 }
 
 function enviarMensaje(){
-    let texto = $("textarea").val()
-    let url = "/categorias/"+salaObj.categoriaNombre+"/salas/"+salaObj.id+"/mensajes"
+    let mensaje = {
+        texto: $("textarea").val(),
+        autor: usuario
+    }
+    let url = "/categorias/"+urlEncoded.categoriaNombre+"/salas/"+urlEncoded.id+"/mensajes"
     $.ajax({
         type: "POST",
         url: url,
-        data: JSON.stringify({
-            texto: texto
-        }),
+        data: JSON.stringify(mensaje),
         contentType: "application/json",
         beforeSend: function(request){
             request.setRequestHeader("Authorization", "Bearer "+jwt)
@@ -44,7 +50,7 @@ function enviarMensaje(){
 }
 
 async function entrarSala(){
-    let url = "/categorias/"+salaObj.categoriaNombre+"/salas/"+salaObj.id+"/participantes"
+    let url = "/categorias/"+urlEncoded.categoriaNombre+"/salas/"+urlEncoded.id+"/participantes"
     return new Promise(function(resolve, reject){
         $.ajax({
             type: "POST",
@@ -67,7 +73,7 @@ async function entrarSala(){
 }
 
 async function getSala(){
-    let url = "/categorias/"+salaObj.categoriaNombre+"/salas/"+salaObj.id
+    let url = "/categorias/"+urlEncoded.categoriaNombre+"/salas/"+urlEncoded.id
     return new Promise(function(resolve, reject){
         $.ajax({
             type: "GET",
@@ -90,16 +96,18 @@ async function getSala(){
 }
 
 function actualizarVista(data){
-    if(data.mensajes.length != salaObj.mensajes.length){
+    console.log(data.mensajes!=null)
+    if(data.mensajes!=null && data.mensajes.length != salaObj.mensajes.length){
+        console.log("ayy")
         $("#mensajesLista").empty()
         for(let msj of data.mensajes){
         $("#mensajesLista").append(
             "<li>\
                 <div class=\"header\">\
                     <div class=\"avatar-marco\">\
-                        <img class=\"avatar-img\" src=\"logo.png\"/>\
+                        <img class=\"avatar-img\" src="+msj.autor.avatar+"/>\
                     </div>\
-                    <span><strong>"+"reemplazar"+"</strong></span>\
+                    <span><strong>"+msj.autor.nombre+"</strong></span>\
                 </div>\
                 <p>"+msj.texto+"</p>\
             </li>")
@@ -111,7 +119,7 @@ function actualizarVista(data){
         $("#participantesLista").append(
             "<li>\
                 <div class=\"avatar-marco\">\
-                        <img class=\"avatar-img\" src=\"logo.png\"/>\
+                        <img class=\"avatar-img\" src="+p.avatar+"/>\
                 </div>\
                 <span>"+p.nombre+"</span>\
             </li>")
@@ -120,21 +128,16 @@ function actualizarVista(data){
     salaObj = data
 }
 
-function salir(){
+function updateUsuario(){
     let timestamp2 = new Date().getTime()
     let ttotal = timestamp2 - timestamp1
-    let tsegundos = ttotal/1000
-    let segundos = Math.floor((tsegundos%60))
-    let tminutos = segundos/60
-    let minutos = Math.floor((tminutos%60))
-    let horas = Math.floor((tminutos/60))
-    //enviar update user
+
     usuario.tiempoTrabajado +=ttotal
     let url = "/usuarios/"+usuario.id
     $.ajax({
         type: "PUT",
         url: url,
-        data: usuario,
+        data: JSON.stringify(usuario),
         contentType: "application/json",
         beforeSend: function(request){
             request.setRequestHeader("Authorization", "Bearer "+jwt)
@@ -144,8 +147,27 @@ function salir(){
                 manejarProhibido()
         }
     })
+}
+
+function mostrarModal(){
+    updateUsuario()
+    let timestamp2 = new Date().getTime()
+    let ttotal = timestamp2 - timestamp1
+    let tsegundos = ttotal/1000
+    let segundos = Math.floor((tsegundos%60))
+    let tminutos = segundos/60
+    let minutos = Math.floor((tminutos%60))
+    let horas = Math.floor((tminutos/60))
+    $(".modal-body").empty()
+    $(".modal-body")
+        .append("¿Seguro que quieres salir de la sala? Has trabajado un tiempo total de: "+horas+" horas, "+minutos+" minutos, "+segundos+" segundos.")
+    $("#modalSalir").modal("show")
+}
+
+function salir(){
     //enviar delete participante
-    url = "/categorias/"+salaObj.categoriaNombre+"/salas/"+salaObj.id+"/participantes/"+usuario.id
+    let url = "/categorias/"+urlEncoded.categoriaNombre+"/salas/"+urlEncoded.id+"/participantes/"+usuario.id
+    console.log(url)
     $.ajax({
         type: "DELETE",
         url: url,
@@ -156,12 +178,10 @@ function salir(){
             if(xhr.status == 403)
                 manejarProhibido()
         },
-        success: function(){
-            alert("Has salido de la sala. Has trabajado un tiempo total de: "+horas+" horas, "+minutos+" minutos, "+segundos+" segundos.")
+        success: function(xhr, status){
             window.location.href="index.html"
         }
     })
-    
 }
 
 $(document).ready(function(){
@@ -172,13 +192,14 @@ $(document).ready(function(){
         if(event.keyCode === 13)
             enviarMensaje()
     })
-    $("#salir-boton").click(salir)
-    window.onbeforeunload = salir
+    $("#salir-boton").click(mostrarModal)
+    $("#confirmarSalir").click(salir)
     entrarSala().then(() => {
         getSala().then(actualizarVista)
     })
     
     setInterval(()=>{
+        updateUsuario()
         getSala().then(actualizarVista)
     }, 5000)
 })

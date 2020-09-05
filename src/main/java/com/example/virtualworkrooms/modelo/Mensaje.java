@@ -8,15 +8,13 @@ public class Mensaje {
     @Id
     private String id;
     private String texto;
-    private String media;
     private Usuario autor;
     private LocalDateTime fecha;
     private String salaId;
 
 
-    public Mensaje(String texto, String media, Usuario autor, LocalDateTime fecha, String salaId) {
+    public Mensaje(String texto, Usuario autor, LocalDateTime fecha, String salaId) {
         this.texto = texto;
-        this.media = media;
         this.autor = autor;
         this.fecha = fecha;
         this.salaId = salaId;
@@ -38,14 +36,6 @@ public class Mensaje {
 
     public void setTexto(String texto) {
         this.texto = texto;
-    }
-
-    public String getMedia() {
-        return this.media;
-    }
-
-    public void setMedia(String media) {
-        this.media = media;
     }
 
     public Usuario getAutor() {
@@ -78,7 +68,6 @@ public class Mensaje {
         return "{" +
             " id='" + id + "'" +
             ", texto='" + texto + "'" +
-            ", media='" + media + "'" +
             ", autor='" + autor + "'" +
             ", fecha='" + fecha + "'" +
             ", salaId='" + salaId + "'" +
