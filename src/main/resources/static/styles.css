@@ -150,3 +150,8 @@ nav .btn:hover {
     max-height: 100%;
     display: block;
 }
+
+#mensajesLista iframe, #mensajesLista img {
+    max-width: 90%;
+    max-height: 70%;
+}

@@ -96,9 +96,7 @@ async function getSala(){
 }
 
 function actualizarVista(data){
-    console.log(data.mensajes!=null)
     if(data.mensajes!=null && data.mensajes.length != salaObj.mensajes.length){
-        console.log("ayy")
         $("#mensajesLista").empty()
         for(let msj of data.mensajes){
         $("#mensajesLista").append(
@@ -155,7 +153,7 @@ function mostrarModal(){
     let ttotal = timestamp2 - timestamp1
     let tsegundos = ttotal/1000
     let segundos = Math.floor((tsegundos%60))
-    let tminutos = segundos/60
+    let tminutos = tsegundos/60
     let minutos = Math.floor((tminutos%60))
     let horas = Math.floor((tminutos/60))
     $(".modal-body").empty()
@@ -167,7 +165,6 @@ function mostrarModal(){
 function salir(){
     //enviar delete participante
     let url = "/categorias/"+urlEncoded.categoriaNombre+"/salas/"+urlEncoded.id+"/participantes/"+usuario.id
-    console.log(url)
     $.ajax({
         type: "DELETE",
         url: url,
