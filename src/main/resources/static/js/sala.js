@@ -13,6 +13,7 @@ var salaObj = {
     participantes: []
 }
 var timestamp1 = new Date().getTime()
+var timestampUltimoUpdate = timestamp1
 var usuario = JSON.parse(window.localStorage.getItem("usuario"))
 var jwt = window.localStorage.getItem("jwt")
 
@@ -128,7 +129,7 @@ function actualizarVista(data){
 
 function updateUsuario(){
     let timestamp2 = new Date().getTime()
-    let ttotal = timestamp2 - timestamp1
+    let ttotal = timestamp2 - timestampUltimoUpdate
 
     usuario.tiempoTrabajado +=ttotal
     let url = "/usuarios/"+usuario.id
@@ -145,6 +146,7 @@ function updateUsuario(){
                 manejarProhibido()
         }
     })
+    timestampUltimoUpdate = timestamp2
 }
 
 function mostrarModal(){
