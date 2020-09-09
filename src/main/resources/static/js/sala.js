@@ -97,8 +97,9 @@ async function getSala(){
 }
 
 function actualizarVista(data){
-    if(data.mensajes!=null && salaObj.mensajes != null &&
-        data.mensajes.length != salaObj.mensajes.length){
+    if(salaObj.mensajes == null)
+        salaObj.mensajes = []
+    if(data.mensajes!=null && data.mensajes.length != salaObj.mensajes.length){
         $("#mensajesLista").empty()
         for(let msj of data.mensajes){
         $("#mensajesLista").append(
