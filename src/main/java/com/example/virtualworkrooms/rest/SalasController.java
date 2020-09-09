@@ -45,7 +45,6 @@ public class SalasController {
             throws VirtualWorkRoomsException {
         
         nombreCat = URLDecoder.decode(nombreCat, StandardCharsets.UTF_8);
-        System.out.println(nombreCat);
         Sala s = controladorSalas.newSala(nombreCat, sala);
         URI location = ServletUriComponentsBuilder
                         .fromCurrentRequest().path("/{id}")
